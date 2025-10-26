@@ -7,14 +7,19 @@ Tests all major components and their integration.
 import os
 import sys
 
-# Add parent directory to path
+# Add parent directory to path for testing purposes
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from backend.models.music_generator import MusicGenerator
-from backend.models.music_utils import MusicFileGenerator
-from backend.database.models import (
-    init_db, SessionLocal, GeneratedMusic, UserFeedback, ModelTrainingData
-)
+try:
+    from backend.models.music_generator import MusicGenerator
+    from backend.models.music_utils import MusicFileGenerator
+    from backend.database.models import (
+        init_db, SessionLocal, GeneratedMusic, UserFeedback, ModelTrainingData
+    )
+except ImportError as e:
+    print(f"❌ Import error: {e}")
+    print("Make sure you're running from the project root directory")
+    sys.exit(1)
 
 
 def test_music_generation():
@@ -216,12 +221,23 @@ def cleanup():
     """Clean up test files."""
     print("\n=== Cleaning Up ===")
 
+    # Get absolute path to generated_music directory
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    generated_dir = os.path.join(base_dir, 'generated_music')
+
     # Remove test MIDI files
-    if os.path.exists('generated_music'):
-        for file in os.listdir('generated_music'):
-            if file.startswith('music_') and file.endswith('.mid'):
-                os.remove(os.path.join('generated_music', file))
-                print(f"✓ Removed {file}")
+    if os.path.exists(generated_dir):
+        try:
+            for file in os.listdir(generated_dir):
+                if file.startswith('music_') and file.endswith('.mid'):
+                    file_path = os.path.join(generated_dir, file)
+                    try:
+                        os.remove(file_path)
+                        print(f"✓ Removed {file}")
+                    except OSError as e:
+                        print(f"⚠ Could not remove {file}: {e}")
+        except OSError as e:
+            print(f"⚠ Could not access generated_music directory: {e}")
 
     print("✅ Cleanup complete!")
 
@@ -234,26 +250,73 @@ def main():
 
     try:
         test_music_generation()
-        test_file_generation()
-        test_database_operations()
-        test_self_learning()
-        test_music_quality()
-        cleanup()
-
-        print("\n" + "=" * 60)
-        print("✅ ALL TESTS PASSED!")
-        print("=" * 60)
-        print("\nThe Music AI App is ready to use!")
-        print("Run: streamlit run app.py")
-        print("=" * 60)
-
-        return 0
-
+    except AssertionError as e:
+        print(f"\n❌ Music Generation Test Failed: {str(e)}")
+        return 1
     except Exception as e:
-        print(f"\n❌ TEST FAILED: {str(e)}")
+        print(f"\n❌ Unexpected error in music generation: {str(e)}")
         import traceback
         traceback.print_exc()
         return 1
+
+    try:
+        test_file_generation()
+    except AssertionError as e:
+        print(f"\n❌ File Generation Test Failed: {str(e)}")
+        return 1
+    except Exception as e:
+        print(f"\n❌ Unexpected error in file generation: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return 1
+
+    try:
+        test_database_operations()
+    except AssertionError as e:
+        print(f"\n❌ Database Operations Test Failed: {str(e)}")
+        return 1
+    except Exception as e:
+        print(f"\n❌ Unexpected error in database operations: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return 1
+
+    try:
+        test_self_learning()
+    except AssertionError as e:
+        print(f"\n❌ Self-Learning Test Failed: {str(e)}")
+        return 1
+    except Exception as e:
+        print(f"\n❌ Unexpected error in self-learning: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return 1
+
+    try:
+        test_music_quality()
+    except AssertionError as e:
+        print(f"\n❌ Music Quality Test Failed: {str(e)}")
+        return 1
+    except Exception as e:
+        print(f"\n❌ Unexpected error in music quality: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return 1
+
+    try:
+        cleanup()
+    except Exception as e:
+        print(f"\n⚠ Cleanup had issues: {str(e)}")
+        # Don't fail on cleanup issues
+
+    print("\n" + "=" * 60)
+    print("✅ ALL TESTS PASSED!")
+    print("=" * 60)
+    print("\nThe Music AI App is ready to use!")
+    print("Run: streamlit run app.py")
+    print("=" * 60)
+
+    return 0
 
 
 if __name__ == "__main__":
