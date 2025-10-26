@@ -1,7 +1,7 @@
 """Application configuration settings."""
 from typing import List
 from pydantic_settings import BaseSettings
-from pydantic import ConfigDict
+from pydantic import ConfigDict, computed_field
 
 
 class Settings(BaseSettings):
@@ -25,7 +25,12 @@ class Settings(BaseSettings):
     POSTGRES_USER: str = "postgres"
     POSTGRES_PASSWORD: str = "password"
     POSTGRES_DB: str = "musicai"
-    DATABASE_URL: str = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_SERVER}/{POSTGRES_DB}"
+    
+    @computed_field
+    @property
+    def DATABASE_URL(self) -> str:
+        """Construct database URL from components."""
+        return f"postgresql://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@{self.POSTGRES_SERVER}/{self.POSTGRES_DB}"
     
     MONGODB_URL: str = "mongodb://localhost:27017"
     MONGODB_DB: str = "musicai_metadata"
