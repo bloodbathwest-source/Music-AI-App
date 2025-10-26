@@ -6,7 +6,7 @@ This is a Music-Evolving AI web application built with Streamlit. The applicatio
 
 ### Technology Stack
 
-- **Python 3.11**: Primary programming language
+- **Python 3.8-3.11**: Supports Python 3.8+ (CI/CD tests 3.8, 3.9, 3.10; devcontainer uses 3.11)
 - **Streamlit**: Web framework for the interactive UI
 - **PyTorch**: Neural network framework for LSTM models
 - **Libraries**:
@@ -17,8 +17,8 @@ This is a Music-Evolving AI web application built with Streamlit. The applicatio
 
 ### Project Structure
 
-- `app.py`: Main Streamlit application (legacy/working version)
-- `code version one`: Alternative/earlier version of the application
+- `app.py`: Placeholder file for the main Streamlit application
+- `code version one`: Working implementation of the music generation application
 - `.github/workflows/pylint.yml`: CI/CD pipeline for code quality
 - `.devcontainer/`: Development container configuration for Codespaces
 
@@ -47,9 +47,11 @@ This is a Music-Evolving AI web application built with Streamlit. The applicatio
 
 1. **Linting**: All Python code must pass `pylint` before committing
    - Run: `pylint $(git ls-files '*.py')`
-   - CI/CD runs on Python 3.8, 3.9, and 3.10
+   - CI/CD runs on Python 3.8, 3.9, and 3.10 to ensure compatibility
+   - Development environment uses Python 3.11
 2. **Manual Testing**: Test the Streamlit app locally before submitting changes
-   - Run: `streamlit run app.py`
+   - Run: `streamlit run "code version one"` (current working implementation)
+   - Note: `app.py` is currently a placeholder
    - Verify all user interactions work as expected
 
 ### Working with Streamlit
@@ -93,17 +95,18 @@ This is a Music-Evolving AI web application built with Streamlit. The applicatio
 
 ### Adding a New Genre
 
-1. Add the genre to the selectbox options in `app.py`
+1. Add the genre to the selectbox options in `code version one`
 2. Define appropriate scale patterns if needed
 3. Update the melody generation logic to handle the new genre
 4. Test the complete flow from selection to audio output
 
 ### Modifying the Neural Network
 
-1. Update the `MusicLSTM` class definition
-2. Ensure forward pass is correctly implemented
-3. Update training logic if needed
-4. Test that the model can be instantiated and used
+1. Update the `MusicLSTM` class definition in `code version one`
+2. Note: The LSTM implementation is currently simplified/placeholder
+3. Ensure forward pass is correctly implemented
+4. Update training logic if needed
+5. Test that the model can be instantiated and used
 
 ### Changing Audio Output
 
