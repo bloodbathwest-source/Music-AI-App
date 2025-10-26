@@ -131,16 +131,35 @@ class UserPreferenceService:
     """Service for user preference CRUD operations"""
     
     @staticmethod
-    def get_preferences() -> UserPreference:
-        """Get user preferences"""
+    def get_theme() -> str:
+        """Get theme preference"""
+        session = get_session()
+        prefs = session.query(UserPreference).first()
+        if not prefs:
+            theme = 'dark'
+        else:
+            theme = prefs.theme
+        session.close()
+        return theme
+    
+    @staticmethod
+    def get_preferences() -> dict:
+        """Get user preferences as dictionary"""
         session = get_session()
         prefs = session.query(UserPreference).first()
         if not prefs:
             prefs = UserPreference()
             session.add(prefs)
             session.commit()
+        
+        result = {
+            'theme': prefs.theme,
+            'default_genre': prefs.default_genre,
+            'default_key': prefs.default_key,
+            'default_tempo': prefs.default_tempo
+        }
         session.close()
-        return prefs
+        return result
     
     @staticmethod
     def update_theme(theme: str) -> bool:

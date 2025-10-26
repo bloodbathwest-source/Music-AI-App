@@ -32,8 +32,7 @@ def init_app():
         st.session_state.current_song_id = None
     
     if 'theme' not in st.session_state:
-        prefs = UserPreferenceService.get_preferences()
-        st.session_state.theme = prefs.theme
+        st.session_state.theme = UserPreferenceService.get_theme()
     
     # Create static directories if they don't exist
     os.makedirs('static/audio', exist_ok=True)
