@@ -5,6 +5,7 @@ Creates simple geometric album art using PIL
 from PIL import Image, ImageDraw, ImageFont
 import random
 import os
+import re
 from typing import Tuple
 
 
@@ -135,6 +136,14 @@ class AlbumArtGenerator:
     
     def generate(self, title: str, output_path: str) -> str:
         """Generate complete album art"""
+        # Sanitize the output path to prevent path injection
+        output_path = os.path.normpath(output_path)
+        base_dir = os.path.normpath(os.path.join(os.getcwd(), 'static', 'images'))
+        
+        # Ensure the path is within the allowed directory
+        if not output_path.startswith(base_dir):
+            output_path = os.path.join(base_dir, os.path.basename(output_path))
+        
         # Create base gradient
         img = self.generate_gradient_background()
         

@@ -5,6 +5,7 @@ import random
 import numpy as np
 from midiutil import MIDIFile
 import os
+import re
 from typing import Dict, List, Tuple
 
 
@@ -99,6 +100,14 @@ class MusicGenerator:
     
     def generate_midi(self, output_path: str, title: str = "AI Generated Song") -> str:
         """Generate MIDI file"""
+        # Sanitize the output path to prevent path injection
+        output_path = os.path.normpath(output_path)
+        base_dir = os.path.normpath(os.path.join(os.getcwd(), 'static', 'audio'))
+        
+        # Ensure the path is within the allowed directory
+        if not output_path.startswith(base_dir):
+            output_path = os.path.join(base_dir, os.path.basename(output_path))
+        
         midi = MIDIFile(2)  # 2 tracks: melody and harmony
         
         # Track 0: Melody

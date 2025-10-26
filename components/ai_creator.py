@@ -7,6 +7,7 @@ from backend.lyric_generator import LyricGenerator
 from backend.album_art_generator import AlbumArtGenerator
 from database.crud import SongService
 import os
+import re
 from datetime import datetime
 
 
@@ -103,10 +104,18 @@ def render_lyrics_only_creator():
 def generate_full_song(title, genre, emotion, key, mode, tempo, num_bars, gen_lyrics, gen_art):
     """Generate a complete song with music, lyrics, and album art"""
     try:
-        # Create output paths
+        # Sanitize title to prevent path injection
+        safe_title = re.sub(r'[^\w\s-]', '', title).strip().replace(' ', '_')
+        if not safe_title:
+            safe_title = 'untitled'
+        
+        # Create output paths with sanitized title
         timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-        music_path = os.path.join('static', 'audio', f'{timestamp}_{title.replace(" ", "_")}.mid')
-        art_path = os.path.join('static', 'images', f'{timestamp}_{title.replace(" ", "_")}.png')
+        music_filename = f'{timestamp}_{safe_title}.mid'
+        art_filename = f'{timestamp}_{safe_title}.png'
+        
+        music_path = os.path.join('static', 'audio', music_filename)
+        art_path = os.path.join('static', 'images', art_filename)
         
         # Generate music
         music_gen = MusicGenerator(genre=genre, key=key, mode=mode, emotion=emotion, tempo=tempo)
@@ -177,8 +186,14 @@ def generate_full_song(title, genre, emotion, key, mode, tempo, num_bars, gen_ly
 def generate_music_only(title, genre, key, mode, tempo, num_bars):
     """Generate music only"""
     try:
+        # Sanitize title to prevent path injection
+        safe_title = re.sub(r'[^\w\s-]', '', title).strip().replace(' ', '_')
+        if not safe_title:
+            safe_title = 'untitled'
+        
         timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-        music_path = os.path.join('static', 'audio', f'{timestamp}_{title.replace(" ", "_")}.mid')
+        music_filename = f'{timestamp}_{safe_title}.mid'
+        music_path = os.path.join('static', 'audio', music_filename)
         
         music_gen = MusicGenerator(genre=genre, key=key, mode=mode, tempo=tempo)
         music_gen.generate_midi(music_path, title)
