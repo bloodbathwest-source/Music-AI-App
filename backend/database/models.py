@@ -1,17 +1,18 @@
 """Database models for Music AI App."""
+from datetime import datetime
+
 from sqlalchemy import Column, Integer, String, Float, DateTime, Text, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from datetime import datetime
 
 Base = declarative_base()
 
 
 class GeneratedMusic(Base):
     """Model for storing generated music pieces."""
-    
+
     __tablename__ = 'generated_music'
-    
+
     id = Column(Integer, primary_key=True, autoincrement=True)
     genre = Column(String(50), nullable=False)
     mood = Column(String(50), nullable=False)
@@ -26,9 +27,9 @@ class GeneratedMusic(Base):
 
 class UserFeedback(Base):
     """Model for storing user feedback on generated music."""
-    
+
     __tablename__ = 'user_feedback'
-    
+
     id = Column(Integer, primary_key=True, autoincrement=True)
     music_id = Column(Integer, nullable=False)
     rating = Column(Integer, nullable=False)  # 1-5 scale
@@ -38,9 +39,9 @@ class UserFeedback(Base):
 
 class ModelTrainingData(Base):
     """Model for storing training data for self-learning."""
-    
+
     __tablename__ = 'model_training_data'
-    
+
     id = Column(Integer, primary_key=True, autoincrement=True)
     music_id = Column(Integer, nullable=False)
     genre = Column(String(50), nullable=False)

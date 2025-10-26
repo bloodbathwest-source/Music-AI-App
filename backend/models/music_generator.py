@@ -1,10 +1,11 @@
 """AI Music Generation Module using genetic algorithm and neural networks."""
 import random
+import json
+from typing import List, Dict, Tuple, Optional
+
 import numpy as np
 import torch
 import torch.nn as nn
-from typing import List, Dict, Tuple, Optional
-import json
 
 
 class MusicLSTM(nn.Module):
@@ -229,7 +230,7 @@ class MusicGenerator:
         
         for gen in range(generations):
             # Fitness evaluation (based on musical quality heuristics)
-            population.sort(key=lambda x: self._fitness(x), reverse=True)
+            population.sort(key=self._fitness, reverse=True)
             
             # Selection: keep top 50%
             survivors = population[:population_size // 2]
@@ -240,13 +241,13 @@ class MusicGenerator:
                 parent1 = random.choice(survivors)
                 parent2 = random.choice(survivors)
                 child = self._crossover(parent1, parent2)
-                child = self._mutate(child, genre, key_root, mode, mood)
+                child = self._mutate(child, key_root, mode, mood)
                 offspring.append(child)
             
             population = survivors + offspring
         
         # Return best individual
-        population.sort(key=lambda x: self._fitness(x), reverse=True)
+        population.sort(key=self._fitness, reverse=True)
         return population[0]
     
     def _fitness(self, individual: Dict) -> float:
@@ -305,22 +306,20 @@ class MusicGenerator:
     def _mutate(
         self,
         individual: Dict,
-        genre: str,
         key_root: str,
         mode: str,
         mood: str,
         mutation_rate: float = 0.1
     ) -> Dict:
         """Mutate an individual.
-        
+
         Args:
             individual: Individual to mutate
-            genre: Musical genre
             key_root: Root note
             mode: Musical mode
             mood: Emotional mood
             mutation_rate: Probability of mutation
-            
+
         Returns:
             Mutated individual
         """
