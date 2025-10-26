@@ -1,0 +1,89 @@
+# Music AI App - Docker Compose Configuration
+# This file sets up the complete Music AI App environment
+#
+# Before running, set the SECRET_KEY environment variable:
+# export SECRET_KEY="your-secure-secret-key-here"
+# Or create a .env file with: SECRET_KEY=your-secure-secret-key-here
+#
+# Then run: docker-compose up
+
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: musicai_postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: musicai
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - musicai_network
+
+  # MongoDB Database
+  mongodb:
+    image: mongo:7
+    container_name: musicai_mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - musicai_network
+
+  # Backend API
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: musicai_backend
+    ports:
+      - "8000:8000"
+    environment:
+      POSTGRES_SERVER: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: musicai
+      MONGODB_URL: mongodb://mongodb:27017
+      SECRET_KEY: ${SECRET_KEY}  # Must be set via environment variable
+    depends_on:
+      - postgres
+      - mongodb
+    volumes:
+      - ./backend:/app/backend
+      - ./models:/app/models
+    networks:
+      - musicai_network
+    command: uvicorn backend.app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  # Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: musicai_frontend
+    ports:
+      - "3000:3000"
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8000/api
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    networks:
+      - musicai_network
+    command: npm run dev
+
+volumes:
+  postgres_data:
+  mongo_data:
+
+networks:
+  musicai_network:
+    driver: bridge
