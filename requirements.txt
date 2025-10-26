@@ -1,0 +1,6 @@
+streamlit
+midiutil
+matplotlib
+numpy
+Pillow
+plotly
