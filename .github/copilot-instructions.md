@@ -44,6 +44,7 @@ This is a Music-AI-App - a Streamlit web application that uses AI to generate mu
   pylint $(git ls-files '*.py')
   ```
 - The CI/CD pipeline runs pylint on every push for Python 3.8, 3.9, and 3.10
+- Note: The current CI workflow only installs pylint and not project dependencies, which may cause import-related linting warnings
 
 ### Code Quality Standards
 
@@ -66,7 +67,7 @@ This is a Music-AI-App - a Streamlit web application that uses AI to generate mu
 ### Music Generation
 - Uses evolutionary algorithms to generate melodies
 - LSTM neural networks for pattern learning
-- Supports multiple music scales (major, minor, dorian)
+- Supports multiple music scales (major, minor - note: dorian is in UI but not implemented)
 - Generates MIDI files and converts them to WAV
 
 ### User Interface
