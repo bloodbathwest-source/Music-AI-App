@@ -1,0 +1,36 @@
+# Core web framework
+streamlit>=1.28.0
+
+# Music generation and processing
+midiutil>=1.2.1
+music21>=9.1.0
+pretty_midi>=0.2.10
+
+# Audio processing
+pydub>=0.25.1
+librosa>=0.10.1
+soundfile>=0.12.1
+
+# AI and ML
+torch>=2.0.0
+transformers>=4.30.0
+
+# Visualization
+matplotlib>=3.7.0
+plotly>=5.14.0
+scipy>=1.11.0
+
+# Data handling
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Database
+sqlalchemy>=2.0.0
+
+# API integrations
+requests>=2.31.0
+openai>=1.0.0
+
+# Utilities
+python-dotenv>=1.0.0
+Pillow>=10.0.0
