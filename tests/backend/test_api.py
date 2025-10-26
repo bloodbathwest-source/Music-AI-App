@@ -103,7 +103,8 @@ def test_music_generation_invalid_duration():
     }
     headers = {"Authorization": f"Bearer {token}"}
     response = client.post("/api/music/generate", json=generation_params, headers=headers)
-    assert response.status_code == 400
+    # Pydantic validation returns 422 for validation errors
+    assert response.status_code == 422
 
 
 def test_export_track():

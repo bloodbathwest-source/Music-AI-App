@@ -32,13 +32,7 @@ async def generate_music(
     token: str = Depends(oauth2_scheme)
 ):
     """Generate music using AI."""
-    # Validate track length
-    if request.duration < 30 or request.duration > 180:
-        raise HTTPException(
-            status_code=400,
-            detail="Track duration must be between 30 and 180 seconds"
-        )
-    
+    # Pydantic validation handles duration constraints (30-180 seconds)
     # In production, this would queue a background task for AI generation
     task_id = f"task_{hash(str(request))}"
     
