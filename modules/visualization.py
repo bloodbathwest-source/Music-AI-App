@@ -45,6 +45,7 @@ class Visualizer:
         note_names = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
         y_ticks = ax1.get_yticks()
         y_labels = [f"{note_names[int(y) % 12]}{int(y) // 12 - 1}" for y in y_ticks]
+        ax1.set_yticks(y_ticks)
         ax1.set_yticklabels(y_labels)
         
         # Plot 2: Velocity over time
