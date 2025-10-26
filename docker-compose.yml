@@ -1,5 +1,11 @@
 # Music AI App - Docker Compose Configuration
 # This file sets up the complete Music AI App environment
+#
+# Before running, set the SECRET_KEY environment variable:
+# export SECRET_KEY="your-secure-secret-key-here"
+# Or create a .env file with: SECRET_KEY=your-secure-secret-key-here
+#
+# Then run: docker-compose up
 
 version: '3.8'
 
@@ -44,7 +50,7 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: musicai
       MONGODB_URL: mongodb://mongodb:27017
-      SECRET_KEY: ${SECRET_KEY:-your-secret-key-change-in-production}
+      SECRET_KEY: ${SECRET_KEY}  # Must be set via environment variable
     depends_on:
       - postgres
       - mongodb
