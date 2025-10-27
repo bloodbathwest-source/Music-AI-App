@@ -1,12 +1,18 @@
 # Backend Dockerfile for Music AI App
-FROM python:3.11-slim
+FROM python:3.12-slim
 
 WORKDIR /app
 
-# Install system dependencies
+# Install system dependencies required for Python packages
 RUN apt-get update && apt-get install -y \
     gcc \
     g++ \
+    make \
+    libpq-dev \
+    libsndfile1 \
+    libsndfile1-dev \
+    ffmpeg \
+    portaudio19-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements and install Python dependencies
