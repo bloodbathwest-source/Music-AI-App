@@ -135,6 +135,25 @@ The following packages have been updated for Python 3.12 compatibility:
 
 After installation, verify that all dependencies are installed correctly:
 
+### Automated Testing
+
+Run the provided test script to validate the installation:
+
+```bash
+./test_requirements.sh
+```
+
+This script will:
+- Check Python version
+- Validate requirements.txt format
+- Install all dependencies
+- Verify critical package imports
+- Check for dependency conflicts
+
+### Manual Verification
+
+Alternatively, verify manually:
+
 ```bash
 # Check Python version
 python --version
