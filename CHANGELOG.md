@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.1] - 2025-10-27
 
+### Security
+- **Fixed critical security vulnerabilities**
+  - Updated python-multipart from 0.0.12 to 0.0.18 (CVE: DoS via malformed multipart/form-data boundary)
+  - Updated python-jose from 3.3.0 to 3.4.0 (CVE: Algorithm confusion with OpenSSH ECDSA keys)
+  - Updated torch from 2.5.1 to 2.6.0 (CVE: Remote code execution via torch.load)
+
 ### Changed
 - **Updated dependencies for Python 3.12 compatibility**
   - Updated torch from 2.1.1 to 2.5.1 (Python 3.12 support)

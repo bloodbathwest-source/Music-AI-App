@@ -5,7 +5,7 @@
 # Core Backend Framework
 fastapi==0.115.0  # Latest stable FastAPI with Python 3.12 support
 uvicorn[standard]==0.32.0  # ASGI server with WebSockets and performance extras
-python-multipart==0.0.12  # Form data parsing for file uploads
+python-multipart==0.0.18  # Form data parsing for file uploads (patched CVE)
 
 # Database
 sqlalchemy==2.0.35  # ORM for PostgreSQL
@@ -14,12 +14,12 @@ pymongo==4.10.1  # MongoDB driver
 alembic==1.14.0  # Database migrations
 
 # Authentication
-python-jose[cryptography]==3.3.0  # JWT token handling
+python-jose[cryptography]==3.4.0  # JWT token handling (patched algorithm confusion vulnerability)
 passlib[bcrypt]==1.7.4  # Password hashing
 python-decouple==3.8  # Environment variable management
 
 # AI/ML Libraries (Python 3.12 compatible versions)
-torch==2.5.1  # PyTorch for LSTM music generation model
+torch==2.6.0  # PyTorch for LSTM music generation model (patched RCE vulnerability)
 # Note: tensorflow and magenta removed due to Python 3.12 compatibility issues
 # If needed, consider using Python 3.11 or wait for official Python 3.12 support
 # tensorflow was at 2.15.0, requires 2.16+ for Python 3.12

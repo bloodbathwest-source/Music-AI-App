@@ -120,7 +120,7 @@ The following packages have been updated for Python 3.12 compatibility:
 
 | Package | Old Version | New Version | Reason |
 |---------|------------|-------------|--------|
-| torch | 2.1.1 | 2.5.1 | Python 3.12 support starts at 2.2.0 |
+| torch | 2.1.1 | 2.6.0 | Python 3.12 support starts at 2.2.0; 2.6.0 includes security fix |
 | numpy | 1.24.3 | 1.26.4 | Python 3.12 requires 1.26+ |
 | scipy | 1.11.4 | 1.13.1 | Better compatibility with numpy 1.26+ |
 | tensorflow | 2.15.0 | Removed | Python 3.12 support incomplete |
@@ -128,6 +128,8 @@ The following packages have been updated for Python 3.12 compatibility:
 | fastapi | 0.104.1 | 0.115.0 | Security and bug fixes |
 | streamlit | 1.28.2 | 1.39.0 | Latest stable version |
 | pydantic | 2.5.0 | 2.9.2 | Better FastAPI integration |
+| python-multipart | 0.0.6 | 0.0.18 | Security fix for DoS vulnerability |
+| python-jose | 3.3.0 | 3.4.0 | Security fix for algorithm confusion |
 
 ## Verification
 
