@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - **Updated dependencies for Python 3.12 compatibility**
-  - Updated torch from 2.1.1 to 2.5.1 (Python 3.12 support)
+  - Updated torch from 2.1.1 to 2.6.0 (Python 3.12 support + security fix)
   - Updated numpy from 1.24.3 to 1.26.4 (required for Python 3.12)
   - Updated scipy from 1.11.4 to 1.13.1 (better numpy 1.26 compatibility)
   - Updated fastapi from 0.104.1 to 0.115.0 (security and bug fixes)
