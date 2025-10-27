@@ -1,9 +1,11 @@
 """Music generation and management API endpoints."""
 from typing import List
+
 from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks
 from pydantic import BaseModel
+
 from backend.app.api.auth import oauth2_scheme
-from backend.app.models.music import MusicGenerationRequest
+from backend.app.models.music import MusicGenerationRequest, MusicTrack
 
 router = APIRouter()
 
@@ -13,16 +15,6 @@ class GenerationResponse(BaseModel):
     task_id: str
     status: str
     message: str
-
-
-class TrackResponse(BaseModel):
-    """Track response model."""
-    id: str
-    title: str
-    genre: str
-    duration: int
-    file_path: str
-    created_at: str
 
 
 @router.post("/generate", response_model=GenerationResponse)
@@ -67,7 +59,7 @@ async def get_generation_status(
     }
 
 
-@router.get("/tracks", response_model=List[TrackResponse])
+@router.get("/tracks", response_model=List[MusicTrack])
 async def list_tracks(
     _skip: int = 0,
     _limit: int = 10,
@@ -78,7 +70,7 @@ async def list_tracks(
     return []
 
 
-@router.get("/tracks/{track_id}", response_model=TrackResponse)
+@router.get("/tracks/{track_id}", response_model=MusicTrack)
 async def get_track(
     track_id: str,
     _token: str = Depends(oauth2_scheme)
