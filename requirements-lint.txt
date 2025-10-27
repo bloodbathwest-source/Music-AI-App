@@ -1,0 +1,32 @@
+# Lightweight dependencies for linting and static analysis
+# Core web framework
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+python-multipart==0.0.6
+
+# Data validation
+pydantic==2.5.0
+pydantic-settings==2.1.0
+
+# Database (minimal)
+sqlalchemy==2.0.23
+pymongo==4.6.0
+
+# Authentication
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+
+# Testing
+pytest==7.4.3
+pytest-asyncio==0.21.1
+httpx==0.25.2
+
+# Utilities
+python-dotenv==1.0.0
+requests==2.31.0
+
+# Code quality
+pylint==3.0.3
+
+# Minimal versions of ML libs (just for import checks, not actual use)
+numpy==1.24.3
