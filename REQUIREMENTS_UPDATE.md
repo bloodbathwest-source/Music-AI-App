@@ -48,10 +48,11 @@ Three critical security vulnerabilities were addressed:
    - **Impact**: JWT authentication bypass
    - **Status**: Fixed
 
-3. **torch** (2.5.1 → 2.6.0)
+3. **torch** (2.1.1 → 2.6.0)
    - **CVE**: Remote code execution via torch.load with weights_only=True
    - **Impact**: RCE when loading untrusted model files
    - **Status**: Fixed
+   - **Note**: Original requirement was 2.1.1, updated to 2.6.0 (2.5.1 was considered but 2.6.0 has the security fix)
 
 ## System Dependencies
 
