@@ -1,5 +1,5 @@
 # Core Backend Framework
-fastapi==0.104.1
+fastapi==0.115.0
 uvicorn[standard]==0.24.0
 python-multipart==0.0.6
 
@@ -15,7 +15,7 @@ passlib[bcrypt]==1.7.4
 python-decouple==3.8
 
 # AI/ML Libraries
-torch==2.2.0
+torch==2.6.0
 midiutil==1.2.1
 numpy==1.26.0
 
@@ -28,7 +28,7 @@ requests==2.31.0
 stripe==7.4.0
 
 # Utilities
-pydantic==2.5.0
+pydantic>=2.5.0
 pydantic-settings==2.1.0
 python-dotenv==1.0.0
 aiofiles==23.2.1
