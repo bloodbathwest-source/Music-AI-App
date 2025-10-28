@@ -10,7 +10,7 @@ import sys
 sys.path.insert(0, '.')
 
 from app import (
-    Achievement, SillyTitle, VirtualCollectible, RewardSystem,
+    RewardSystem,
     generate_individual, evolve_music, create_midi_from_melody
 )
 

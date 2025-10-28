@@ -97,7 +97,7 @@ def simulate_user_journey():
             print(f"  ✨ New Title Unlocked: {title.title}")
 
     level = reward_system.calculate_level(user_stats['total_actions'])
-    print(f"\n📈 Progress Update:")
+    print("\n📈 Progress Update:")
     print(f"  Level: {level}")
     print(f"  Tracks Created: {user_stats['tracks_created']}")
     print(f"  Genres Explored: {user_stats['genres_explored']}/4")
@@ -125,7 +125,7 @@ def simulate_user_journey():
     level = reward_system.calculate_level(user_stats['total_actions'])
     progress, needed = reward_system.get_progress_to_next_level(user_stats['total_actions'])
 
-    print(f"\n📊 Final State:")
+    print("\n📊 Final State:")
     print(f"  Level: {level} (Progress: {progress}/{needed} to next level)")
     print(f"  Tracks Created: {user_stats['tracks_created']}")
     print(f"  Genres Explored: {user_stats['genres_explored']}/4")
@@ -138,7 +138,7 @@ def simulate_user_journey():
     print(f"  Titles Unlocked: {len(unlocked_titles)}/{len(reward_system.titles)}")
 
     if unlocked_titles:
-        print(f"\n  Available Titles:")
+        print("\n  Available Titles:")
         for title in unlocked_titles:
             print(f"    • {title.title}")
 

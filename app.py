@@ -4,17 +4,14 @@ A Streamlit application for generating music with AI and gamification features.
 """
 
 import io
-import json
 import random
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Dict, List, Tuple, Optional
 
 import matplotlib.pyplot as plt
 import streamlit as st
-import torch
-from torch import nn, optim
+from torch import nn
 from midiutil import MIDIFile
-from pydub import AudioSegment
 
 # ============================================================================
 # REWARD SYSTEM CLASSES AND FUNCTIONS
