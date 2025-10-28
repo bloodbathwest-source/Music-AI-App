@@ -217,7 +217,12 @@ frontend/.env.test.local
 frontend/.env.production.local
 
 # Music AI App specific
-models/
+# Exclude ML model files but allow Python model definitions
+*.pth
+*.h5
+*.pkl
+*.joblib
+saved_models/
 *.mid
 *.midi
 *.wav
