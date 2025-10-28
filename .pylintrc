@@ -1,0 +1,16 @@
+[MESSAGES CONTROL]
+# Disable specific warnings that are not critical
+disable=
+    too-few-public-methods,
+    too-many-arguments,
+    too-many-positional-arguments,
+    too-many-locals,
+    invalid-name
+
+[FORMAT]
+# Maximum number of characters on a single line
+max-line-length=100
+
+[DESIGN]
+# Minimum number of public methods for a class (R0903)
+min-public-methods=0
