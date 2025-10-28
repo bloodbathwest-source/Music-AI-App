@@ -205,23 +205,3 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
-
-# Frontend dependencies and build
-frontend/node_modules/
-frontend/.next/
-frontend/out/
-frontend/build/
-frontend/.env.local
-frontend/.env.development.local
-frontend/.env.test.local
-frontend/.env.production.local
-
-# Music AI App specific
-models/
-*.mid
-*.midi
-*.wav
-*.mp3
-*.flac
-generated_music/
-uploads/
