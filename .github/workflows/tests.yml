@@ -23,7 +23,8 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        # Install from requirements.txt for consistent versions
+        # Install only packages needed for tests (lighter than full requirements.txt)
+        # Versions match requirements.txt for consistency
         pip install pytest==7.4.3 pytest-asyncio==0.21.1 httpx==0.25.2
         pip install fastapi==0.115.0 uvicorn==0.24.0
         pip install pydantic>=2.5.0 pydantic-settings==2.1.0
