@@ -1,0 +1,35 @@
+# Web Framework
+fastapi==0.104.1
+uvicorn==0.24.0
+
+# Data Validation
+pydantic==2.5.0
+pydantic-settings==2.11.0
+
+# Authentication & Security
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+python-multipart==0.0.6
+email-validator==2.3.0
+
+# Database
+sqlalchemy==2.0.23
+pymongo==4.6.0
+
+# AI/ML Libraries
+tensorflow==2.20.0
+numpy==1.24.3
+
+# MIDI Processing
+midiutil==1.2.1
+
+# Web UI (for Streamlit prototype)
+streamlit==1.29.0
+
+# Testing
+pytest==7.4.3
+pytest-asyncio==0.21.1
+httpx==0.25.2
+
+# Code Quality
+pylint==3.0.3
