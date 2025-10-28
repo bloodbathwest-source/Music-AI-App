@@ -1,1 +1,47 @@
-tensorflow==2.20.0
+# Core Backend Framework
+fastapi==0.115.0
+uvicorn[standard]==0.24.0
+python-multipart==0.0.6
+
+# Database
+sqlalchemy==2.0.23
+psycopg2-binary==2.9.9
+pymongo==4.6.0
+alembic==1.12.1
+
+# Authentication
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+python-decouple==3.8
+
+# AI/ML Libraries
+torch==2.6.0
+midiutil==1.2.1
+numpy==1.26.0
+
+# Cloud Storage
+boto3==1.29.7
+google-cloud-storage==2.13.0
+
+# API Integrations
+requests==2.31.0
+stripe==7.4.0
+
+# Utilities
+pydantic>=2.5.0
+pydantic-settings==2.1.0
+python-dotenv==1.0.0
+aiofiles==23.2.1
+email-validator==2.1.0
+
+# Testing
+pytest==7.4.3
+pytest-asyncio==0.21.1
+httpx==0.25.2
+
+# Web (for existing Streamlit app)
+streamlit==1.28.2
+matplotlib==3.8.2
+
+# Development
+pylint==3.0.3
