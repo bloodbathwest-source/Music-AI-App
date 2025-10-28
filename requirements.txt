@@ -15,7 +15,7 @@ passlib[bcrypt]==1.7.4
 python-decouple==3.8
 
 # AI/ML Libraries
-torch==2.1.1
+torch==2.9.0
 tensorflow==2.15.0
 magenta==2.1.4
 midiutil==1.2.1
