@@ -43,5 +43,5 @@ httpx==0.25.2
 streamlit==1.28.2
 matplotlib==3.8.2
 
-# Security
+# Development
 pylint==3.0.3
