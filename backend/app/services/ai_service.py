@@ -27,8 +27,8 @@ if TORCH_AVAILABLE:
             self.fc = nn.Linear(hidden_size, output_size)
         
         def forward(self, x):
-            h0 = torch.zeros(self.num_layers, x.size(0), self.hidden_size)
-            c0 = torch.zeros(self.num_layers, x.size(0), self.hidden_size)
+            h0 = torch.zeros(self.num_layers, x.size(0), self.hidden_size).to(x.device)
+            c0 = torch.zeros(self.num_layers, x.size(0), self.hidden_size).to(x.device)
             out, _ = self.lstm(x, (h0, c0))
             out = self.fc(out[:, -1, :])
             return out
@@ -142,7 +142,12 @@ class MusicGenerationService:
             List of note dictionaries with note, duration, and velocity
         """
         melody = []
-        time_per_note = duration / max(num_notes, 1)
+        
+        # Handle case where no notes should be generated
+        if num_notes <= 0:
+            return melody
+        
+        time_per_note = duration / num_notes
         
         for i in range(num_notes):
             # Select note from scale with slight tendency toward tonic
@@ -208,7 +213,7 @@ class MusicGenerationService:
         midi_io.seek(0)
         return midi_io.read()
     
-    def train_model(self, training_data: List[Dict]):
+    def train_model(self, training_data: List[Dict]) -> bool:
         """
         Train the LSTM model on custom data.
 
