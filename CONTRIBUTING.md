@@ -2,6 +2,10 @@
 
 Thank you for your interest in contributing to Music AI App! This document provides guidelines for contributing to the project.
 
+## GitHub Copilot Coding Agent
+
+This repository is optimized for GitHub Copilot coding agent. If you're using Copilot to work on issues, please refer to our [Copilot Guide](COPILOT_GUIDE.md) for best practices and tips on creating effective tasks.
+
 ## Getting Started
 
 1. Fork the repository

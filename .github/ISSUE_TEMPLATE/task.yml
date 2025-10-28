@@ -1,0 +1,121 @@
+name: Task for Copilot
+description: Create a well-defined task for GitHub Copilot coding agent
+title: "[Task]: "
+labels: ["task", "copilot"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template to create focused, well-scoped tasks for GitHub Copilot coding agent.
+        The more specific and clear you are, the better results you'll get!
+        
+  - type: textarea
+    id: task-description
+    attributes:
+      label: Task Description
+      description: Clearly describe what needs to be done
+      placeholder: |
+        A clear, specific description of the task. Be as detailed as possible.
+        Example: "Add input validation to the music generation endpoint to ensure tempo is between 60-200 BPM"
+    validations:
+      required: true
+      
+  - type: dropdown
+    id: task-type
+    attributes:
+      label: Task Type
+      description: What type of task is this?
+      options:
+        - Bug Fix
+        - Feature Addition
+        - Refactoring
+        - Documentation
+        - Testing
+        - Performance Improvement
+        - Security Fix
+        - Accessibility Improvement
+        - Code Style/Linting
+        - Dependency Update
+    validations:
+      required: true
+      
+  - type: textarea
+    id: files-to-modify
+    attributes:
+      label: Files to Modify
+      description: List the specific files that need to be changed
+      placeholder: |
+        - backend/app/music.py
+        - tests/backend/test_music.py
+        - backend/app/models.py
+    validations:
+      required: true
+      
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance Criteria
+      description: Define specific, testable criteria for completion
+      placeholder: |
+        - [ ] Input validation is added for tempo parameter
+        - [ ] Valid range is 60-200 BPM
+        - [ ] Error message is returned for invalid values
+        - [ ] Unit tests are added for edge cases
+        - [ ] All existing tests still pass
+        - [ ] Documentation is updated
+    validations:
+      required: true
+      
+  - type: textarea
+    id: test-requirements
+    attributes:
+      label: Testing Requirements
+      description: Specify what tests should be added or updated
+      placeholder: |
+        - Add test for tempo < 60
+        - Add test for tempo > 200
+        - Add test for valid tempo values
+        - Ensure all existing tests pass
+    validations:
+      required: true
+      
+  - type: textarea
+    id: context
+    attributes:
+      label: Context & Background
+      description: Provide any necessary background information
+      placeholder: |
+        - Current behavior: No validation exists
+        - Why this is needed: Invalid tempo values cause crashes
+        - Related code: The validate_input() function in utils.py shows the pattern to follow
+        
+  - type: textarea
+    id: constraints
+    attributes:
+      label: Constraints & Requirements
+      description: Any technical constraints or requirements?
+      placeholder: |
+        - Must maintain backward compatibility
+        - Should follow existing validation patterns
+        - Must not add new dependencies
+        - Performance impact should be minimal
+        
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: How urgent is this task?
+      options:
+        - Low
+        - Medium
+        - High
+        - Critical
+    validations:
+      required: true
+      
+  - type: textarea
+    id: additional-notes
+    attributes:
+      label: Additional Notes
+      description: Any other information that would be helpful
+      placeholder: Additional context, links to documentation, examples, etc.

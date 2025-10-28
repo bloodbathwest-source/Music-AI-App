@@ -117,9 +117,20 @@ pytest tests/backend/
 pytest tests/backend/ --cov=backend
 ```
 
+## Contributing
+
+We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
+
+When creating issues, please use our issue templates:
+- **Bug Report**: For reporting bugs
+- **Feature Request**: For suggesting new features  
+- **Task for Copilot**: For creating well-scoped tasks optimized for GitHub Copilot coding agent
+
 ## Documentation
 
 For detailed documentation, see [README_FULL.md](README_FULL.md)
+
+For information about using GitHub Copilot coding agent with this repository, see [COPILOT_GUIDE.md](COPILOT_GUIDE.md)
 
 ## Development Roadmap
 
