@@ -13,6 +13,17 @@ This application provides a complete music AI platform with:
 
 ## Quick Start
 
+**Important**: For detailed installation instructions including system dependencies, Python version requirements, and troubleshooting, see [INSTALL.md](INSTALL.md).
+
+### Prerequisites
+
+- Python 3.12 (Python 3.11 also supported)
+- System dependencies (see [INSTALL.md](INSTALL.md) for details):
+  - PostgreSQL 13+
+  - MongoDB 5+
+  - libsndfile1
+  - ffmpeg
+
 ### Option 1: Run the Streamlit Prototype
 
 For a quick demo of the music generation capabilities:

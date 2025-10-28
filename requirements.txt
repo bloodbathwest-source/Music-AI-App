@@ -1,54 +1,91 @@
+# Music AI App - Python Dependencies
+# Compatible with Python 3.12 (and Python 3.11)
+# For installation instructions, see INSTALL.md
+
 # Core Backend Framework
-fastapi==0.104.1
-uvicorn[standard]==0.24.0
-python-multipart==0.0.6
+# Latest stable FastAPI with Python 3.12 support
+fastapi==0.115.0
+# ASGI server with WebSockets and performance extras
+uvicorn[standard]==0.32.0
+# Form data parsing for file uploads (patched CVE)
+python-multipart==0.0.18
 
 # Database
-sqlalchemy==2.0.23
-psycopg2-binary==2.9.9
-pymongo==4.6.0
-alembic==1.12.1
+# ORM for PostgreSQL
+sqlalchemy==2.0.35
+# PostgreSQL adapter (binary for easy installation)
+psycopg2-binary==2.9.10
+# MongoDB driver
+pymongo==4.10.1
+# Database migrations
+alembic==1.14.0
 
 # Authentication
-python-jose[cryptography]==3.3.0
+# JWT token handling (patched algorithm confusion vulnerability)
+python-jose[cryptography]==3.4.0
+# Password hashing
 passlib[bcrypt]==1.7.4
+# Environment variable management
 python-decouple==3.8
 
-# AI/ML Libraries
-torch==2.1.1
-tensorflow==2.15.0
-magenta==2.1.4
+# AI/ML Libraries (Python 3.12 compatible versions)
+# PyTorch for LSTM music generation model (patched RCE vulnerability)
+torch==2.6.0
+# Note: tensorflow and magenta removed due to Python 3.12 compatibility issues
+# If needed, consider using Python 3.11 or wait for official Python 3.12 support
+# tensorflow was at 2.15.0, requires 2.16+ for Python 3.12
+# magenta was at 2.1.4, depends on tensorflow
+# MIDI file creation
 midiutil==1.2.1
+# Music theory and analysis
 music21==9.1.0
-librosa==0.10.1
-numpy==1.24.3
-scipy==1.11.4
+# Audio analysis (requires libsndfile1)
+librosa==0.10.2
+# Array operations (1.26+ required for Python 3.12)
+numpy==1.26.4
+# Scientific computing
+scipy==1.13.1
 
-# Audio Processing
+# Audio Processing (requires system library: libsndfile1)
+# Audio manipulation (requires ffmpeg)
 pydub==0.25.1
+# Audio file I/O
 soundfile==0.12.1
 
 # Cloud Storage
-boto3==1.29.7
-google-cloud-storage==2.13.0
+# AWS S3 client
+boto3==1.35.36
+# Google Cloud Storage client
+google-cloud-storage==2.18.2
 
 # API Integrations
-requests==2.31.0
-stripe==7.4.0
+# HTTP client
+requests==2.32.3
+# Payment processing
+stripe==11.1.0
 
 # Utilities
-pydantic==2.5.0
-python-dotenv==1.0.0
-aiofiles==23.2.1
+# Data validation and settings
+pydantic==2.9.2
+# .env file support
+python-dotenv==1.0.1
+# Async file operations
+aiofiles==24.1.0
 
 # Testing
-pytest==7.4.3
-pytest-asyncio==0.21.1
-httpx==0.25.2
+# Testing framework
+pytest==8.3.3
+# Async test support
+pytest-asyncio==0.24.0
+# HTTP client for testing FastAPI
+httpx==0.27.2
 
 # Web (for existing Streamlit app)
-streamlit==1.28.2
-matplotlib==3.8.2
+# Web UI framework for app.py
+streamlit==1.39.0
+# Plotting library
+matplotlib==3.9.2
 
-# Security
-pylint==3.0.3
+# Security and Code Quality
+# Code linting
+pylint==3.3.1

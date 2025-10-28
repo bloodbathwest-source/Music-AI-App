@@ -54,16 +54,24 @@ A cutting-edge Music AI Application that enables users to create, edit, and shar
 
 ## Installation
 
+**For complete installation instructions including system dependencies and troubleshooting, see [INSTALL.md](INSTALL.md).**
+
 ### Prerequisites
-- Python 3.8+
+- Python 3.12 (Python 3.11 also supported)
 - Node.js 16+
 - PostgreSQL 13+
 - MongoDB 5+
+- System libraries: libsndfile1, ffmpeg, portaudio19-dev (see INSTALL.md)
 
 ### Backend Setup
 
 ```bash
+# Create and activate virtual environment (recommended)
+python3.12 -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
 # Install Python dependencies
+pip install --upgrade pip
 pip install -r requirements.txt
 
 # Set up environment variables
@@ -76,6 +84,8 @@ alembic upgrade head
 # Start the API server
 uvicorn backend.app.main:app --reload --host 0.0.0.0 --port 8000
 ```
+
+**Note**: If you encounter installation issues, especially with PyTorch, NumPy, or audio libraries, refer to [INSTALL.md](INSTALL.md) for detailed troubleshooting steps.
 
 ### Frontend Setup
 
