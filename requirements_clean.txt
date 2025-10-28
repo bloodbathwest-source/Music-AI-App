@@ -18,7 +18,7 @@ pymongo==4.6.0
 
 # AI/ML Libraries
 tensorflow==2.20.0
-numpy==1.24.3
+numpy==1.26.4
 
 # MIDI Processing
 midiutil==1.2.1
