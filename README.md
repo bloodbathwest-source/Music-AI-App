@@ -18,7 +18,7 @@ This application provides a complete music AI platform with:
 For a quick demo of the music generation capabilities:
 
 ```bash
-pip install -r requirements.txt
+pip install -r requirements_clean.txt
 streamlit run app.py
 ```
 
@@ -30,7 +30,7 @@ This will launch a simple web interface for music generation with genre, key, mo
 
 ```bash
 # Install dependencies
-pip install -r requirements.txt
+pip install -r requirements_clean.txt
 
 # Set up environment
 cp .env.example .env
