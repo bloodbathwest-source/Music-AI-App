@@ -1,6 +1,24 @@
+# Core dependencies for Music-AI-App
+# This file defines the Python packages needed for the Streamlit frontend
+#
+# To update dependencies:
+#   1. Edit requirements.in with high-level dependencies
+#   2. Run: pip-compile requirements.in
+#   3. Test with: pip install -r requirements.txt
+#
+# Compatible with Python 3.8-3.12
+
+# Web framework for interactive UI
 streamlit>=1.28.0
+
+# Machine Learning - PyTorch for LSTM neural network models
 torch>=2.0.0
+
+# Data visualization for music analysis plots
 matplotlib>=3.7.0
+
+# MIDI file generation
 midiutil>=1.2.1
+
+# Audio file conversion (MIDI to WAV)
 pydub>=0.25.1
-tensorflow==2.20.0
