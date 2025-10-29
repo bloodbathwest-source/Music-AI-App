@@ -28,11 +28,13 @@ def parse_requirements(filepath):
             # Check for valid package specification format
             # Format: package_name[extras]>=version,<version
             # Valid operators: >= <= == != ~= > <
-            # This regex validates pip package specifications, not HTML tags
+            # Note: This regex validates pip package specifications, NOT HTML tags.
+            # The < and > characters are pip version comparison operators.
+            # nosemgrep: python.lang.security.audit.bad-html-tag-filter.bad-html-tag-filter
             package_pattern = (
                 r'^[a-zA-Z0-9_-]+'  # package name
                 r'(\[[a-zA-Z0-9_,-]+\])?'  # optional extras like [dev,test]
-                r'(>=|<=|==|!=|~=|>|<)'  # version comparison operators
+                r'(>=|<=|==|!=|~=|>|<)'  # version comparison operators (not HTML tags)
             )
             if not re.match(package_pattern, line):
                 print(f"Warning: Line {line_num} doesn't match expected format: {line}")
