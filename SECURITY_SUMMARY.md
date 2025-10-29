@@ -30,11 +30,25 @@ All dependencies have been reviewed for known security vulnerabilities. The proj
 
 **Issue**: Mismatch between `pydantic==2.12.3` and `pydantic-settings==2.11.0` could cause runtime errors or security issues.
 
-**Resolution**: Aligned both to version `2.12.3`.
+**Resolution**: Verified that pydantic-settings 2.11.0 (latest available on PyPI) is compatible with pydantic 2.12.3. Updated requirements to use pydantic>=2.12.0 and pydantic-settings>=2.11.0.
 
 **Impact**: Low - Prevents potential type validation bypasses.
 
+### GitHub Actions Workflow Permissions
+
+**Issue**: Workflows were missing explicit permissions for GITHUB_TOKEN, potentially granting excessive permissions.
+
+**Resolution**: Added explicit `permissions: contents: read` to all workflow files (test.yml, install-and-test.yml).
+
+**Impact**: Medium - Restricts workflow permissions to read-only access to repository contents, following the principle of least privilege.
+
 ## Current Security Status
+
+### CodeQL Analysis
+
+- ✅ 0 security alerts in Python code
+- ✅ 0 security alerts in GitHub Actions workflows
+- ✅ All workflows have explicit, minimal permissions
 
 ### Dependencies
 
