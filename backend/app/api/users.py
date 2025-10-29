@@ -1,6 +1,6 @@
 """User management API endpoints."""
-from typing import List, Optional
-from fastapi import APIRouter, Depends, HTTPException
+from typing import Optional
+from fastapi import APIRouter, Depends
 from pydantic import BaseModel, EmailStr
 from backend.app.api.auth import oauth2_scheme
 
@@ -23,7 +23,7 @@ class UserUpdate(BaseModel):
 
 
 @router.get("/profile", response_model=UserProfile)
-async def get_user_profile(token: str = Depends(oauth2_scheme)):
+async def get_user_profile(_token: str = Depends(oauth2_scheme)):
     """Get user profile."""
     return {
         "id": 1,
@@ -37,7 +37,7 @@ async def get_user_profile(token: str = Depends(oauth2_scheme)):
 @router.put("/profile", response_model=UserProfile)
 async def update_user_profile(
     user_update: UserUpdate,
-    token: str = Depends(oauth2_scheme)
+    _token: str = Depends(oauth2_scheme)
 ):
     """Update user profile."""
     return {
@@ -50,6 +50,6 @@ async def update_user_profile(
 
 
 @router.get("/tracks")
-async def get_user_tracks(token: str = Depends(oauth2_scheme)):
+async def get_user_tracks(_token: str = Depends(oauth2_scheme)):
     """Get user's music tracks."""
     return {"tracks": [], "total": 0}

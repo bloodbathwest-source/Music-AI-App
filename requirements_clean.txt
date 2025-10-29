@@ -1,3 +1,6 @@
+# Clean production dependencies for Music AI App
+# Generated for Python 3.8-3.12 compatibility
+
 # Core FastAPI and web framework
 fastapi==0.115.0
 uvicorn[standard]==0.24.0
@@ -15,7 +18,9 @@ sqlalchemy==2.0.23
 pymongo==4.6.0
 
 # AI/ML frameworks
-tensorflow==2.20.0
+# TensorFlow 2.20.0 requires Python 3.9+
+tensorflow==2.20.0; python_version >= '3.9'
+# PyTorch (CPU version for lighter deployment)
 torch==2.6.0
 numpy==1.26.2
 
@@ -27,17 +32,17 @@ music21==9.1.0
 # Visualization
 matplotlib==3.8.2
 
-# Streamlit for prototype
+# Streamlit for prototype interface
 streamlit==1.29.0
 
-# Testing
+# Testing (dev dependency)
 pytest==7.4.3
 pytest-cov==4.1.0
 pytest-asyncio==0.21.1
 
-# Code quality
+# Code quality (dev dependency)
 pylint==3.0.3
 
-# HTTP client (for frontend integration)
+# HTTP client
 httpx==0.25.2
 aiofiles==23.2.1

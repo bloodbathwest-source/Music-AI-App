@@ -217,7 +217,8 @@ frontend/.env.test.local
 frontend/.env.production.local
 
 # Music AI App specific
-models/
+# AI model weights and checkpoints
+/models/
 *.mid
 *.midi
 *.wav
