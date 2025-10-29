@@ -65,15 +65,16 @@ def validate_requirements():
     for line_num, package in packages:
         print(f"  Line {line_num}: {package}")
     
-    # Check for known invalid packages
+    # Check for known invalid packages or patterns
     invalid_packages = []
     for line_num, package in packages:
-        # Check for tensorflow==2.20.0 specifically
-        if 'tensorflow==2.20.0' in package:
-            invalid_packages.append((line_num, package, "Version 2.20.0 doesn't exist"))
-        # Check for very high TensorFlow versions that don't exist
-        if re.match(r'tensorflow==2\.(1[9-9]|[2-9][0-9])', package):
-            invalid_packages.append((line_num, package, "TensorFlow version doesn't exist"))
+        # Generic check for unrealistic version numbers (e.g., package==99.0.0)
+        # This can catch typos or placeholder versions
+        match = re.search(r'==(\d+)\.', package)
+        if match:
+            major_version = int(match.group(1))
+            if major_version > 50:  # Extremely high version numbers are likely errors
+                invalid_packages.append((line_num, package, "Unrealistic version number"))
     
     if invalid_packages:
         print("\nErrors found:")
