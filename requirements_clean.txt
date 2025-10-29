@@ -2,7 +2,7 @@
 # Generated for Python 3.8-3.12 compatibility
 
 # Core FastAPI and web framework
-fastapi==0.104.1
+fastapi==0.115.0
 uvicorn[standard]==0.24.0
 pydantic==2.5.0
 pydantic-settings==2.1.0
@@ -21,7 +21,7 @@ pymongo==4.6.0
 # TensorFlow 2.20.0 requires Python 3.9+
 tensorflow==2.20.0; python_version >= '3.9'
 # PyTorch (CPU version for lighter deployment)
-torch==2.5.1
+torch==2.6.0
 numpy==1.26.2
 
 # Music generation
