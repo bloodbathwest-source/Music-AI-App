@@ -1,9 +1,9 @@
 """Music generation and management API endpoints."""
-from typing import List, Optional
+from typing import List
 from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks
 from pydantic import BaseModel
 from backend.app.api.auth import oauth2_scheme
-from backend.app.models.music import MusicGenerationRequest, MusicTrack
+from backend.app.models.music import MusicGenerationRequest
 
 router = APIRouter()
 
@@ -28,8 +28,8 @@ class TrackResponse(BaseModel):
 @router.post("/generate", response_model=GenerationResponse)
 async def generate_music(
     request: MusicGenerationRequest,
-    background_tasks: BackgroundTasks,
-    token: str = Depends(oauth2_scheme)
+    background_tasks: BackgroundTasks,  # pylint: disable=unused-argument
+    token: str = Depends(oauth2_scheme)  # pylint: disable=unused-argument
 ):
     """Generate music using AI."""
     # Validate track length
@@ -38,10 +38,10 @@ async def generate_music(
             status_code=400,
             detail="Track duration must be between 30 and 180 seconds"
         )
-    
+
     # In production, this would queue a background task for AI generation
     task_id = f"task_{hash(str(request))}"
-    
+
     return {
         "task_id": task_id,
         "status": "queued",
@@ -52,7 +52,7 @@ async def generate_music(
 @router.get("/generate/{task_id}")
 async def get_generation_status(
     task_id: str,
-    token: str = Depends(oauth2_scheme)
+    token: str = Depends(oauth2_scheme)  # pylint: disable=unused-argument
 ):
     """Get status of music generation task."""
     # Mock response
@@ -69,9 +69,9 @@ async def get_generation_status(
 
 @router.get("/tracks", response_model=List[TrackResponse])
 async def list_tracks(
-    skip: int = 0,
-    limit: int = 10,
-    token: str = Depends(oauth2_scheme)
+    skip: int = 0,  # pylint: disable=unused-argument
+    limit: int = 10,  # pylint: disable=unused-argument
+    token: str = Depends(oauth2_scheme)  # pylint: disable=unused-argument
 ):
     """List user's music tracks."""
     # Mock response
@@ -81,7 +81,7 @@ async def list_tracks(
 @router.get("/tracks/{track_id}", response_model=TrackResponse)
 async def get_track(
     track_id: str,
-    token: str = Depends(oauth2_scheme)
+    token: str = Depends(oauth2_scheme)  # pylint: disable=unused-argument
 ):
     """Get specific track details."""
     # Mock response
@@ -98,7 +98,7 @@ async def get_track(
 @router.delete("/tracks/{track_id}")
 async def delete_track(
     track_id: str,
-    token: str = Depends(oauth2_scheme)
+    token: str = Depends(oauth2_scheme)  # pylint: disable=unused-argument
 ):
     """Delete a track."""
     return {"message": f"Track {track_id} deleted successfully"}
@@ -108,7 +108,7 @@ async def delete_track(
 async def share_track(
     track_id: str,
     is_public: bool = True,
-    token: str = Depends(oauth2_scheme)
+    token: str = Depends(oauth2_scheme)  # pylint: disable=unused-argument
 ):
     """Share or unshare a track."""
     return {
