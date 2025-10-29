@@ -19,8 +19,14 @@ class MusicGenerationRequest(BaseModel):
         }
     )
 
-    genre: str = Field(..., description="Music genre (pop, jazz, classical, rock, electronic, ambient)")
-    mood: str = Field(..., description="Mood/emotion (happy, sad, energetic, calm, suspenseful)")
+    genre: str = Field(
+        ...,
+        description="Music genre (pop, jazz, classical, rock, electronic, ambient)"
+    )
+    mood: str = Field(
+        ...,
+        description="Mood/emotion (happy, sad, energetic, calm, suspenseful)"
+    )
     key: str = Field(..., description="Musical key (C, D, E, F, G, A, B)")
     tempo: int = Field(..., ge=60, le=200, description="Tempo in BPM (60-200)")
     duration: int = Field(..., ge=30, le=180, description="Duration in seconds (30-180)")
