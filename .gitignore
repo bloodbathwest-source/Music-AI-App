@@ -218,6 +218,7 @@ frontend/.env.production.local
 
 # Music AI App specific
 models/
+!backend/app/models/
 *.mid
 *.midi
 *.wav
