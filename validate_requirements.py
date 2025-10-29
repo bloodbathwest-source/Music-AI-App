@@ -27,7 +27,14 @@ def parse_requirements(filepath):
             
             # Check for valid package specification format
             # Format: package_name[extras]>=version,<version
-            if not re.match(r'^[a-zA-Z0-9_-]+(\[[a-zA-Z0-9_,-]+\])?(>=|<=|==|!=|~=|>|<)', line):
+            # Valid operators: >= <= == != ~= > <
+            # This regex validates pip package specifications, not HTML tags
+            package_pattern = (
+                r'^[a-zA-Z0-9_-]+'  # package name
+                r'(\[[a-zA-Z0-9_,-]+\])?'  # optional extras like [dev,test]
+                r'(>=|<=|==|!=|~=|>|<)'  # version comparison operators
+            )
+            if not re.match(package_pattern, line):
                 print(f"Warning: Line {line_num} doesn't match expected format: {line}")
                 continue
             
