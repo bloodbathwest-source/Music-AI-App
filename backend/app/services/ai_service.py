@@ -5,8 +5,8 @@ from typing import Dict, List
 from midiutil import MIDIFile
 
 try:
-    import torch
-    import torch.nn as nn
+    import torch  # pylint: disable=unused-import
+    from torch import nn
     TORCH_AVAILABLE = True
 except ImportError:
     torch = None  # type: ignore
@@ -38,7 +38,6 @@ else:
         """Dummy LSTM model placeholder when torch is not available."""
         def __init__(self, *args, **kwargs):
             """Initialize dummy model."""
-            pass
 
 
 class MusicGenerationService:
@@ -51,8 +50,7 @@ class MusicGenerationService:
             try:
                 self.model = MusicLSTM()
                 self.model.eval()
-            except Exception as error:
-                print(f"Failed to initialize LSTM model: {error}")
+            except Exception:
                 self.model = None
 
     def generate_music(self, request) -> Dict:

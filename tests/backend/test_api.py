@@ -1,5 +1,4 @@
 """Test cases for the Music AI App API."""
-import pytest
 from fastapi.testclient import TestClient
 from backend.app.main import app
 
@@ -69,7 +68,7 @@ def test_music_generation_with_auth():
     login_data = {"username": "testuser", "password": "testpass123"}
     login_response = client.post("/api/auth/token", data=login_data)
     token = login_response.json()["access_token"]
-    
+
     # Generate music
     generation_params = {
         "genre": "pop",
@@ -92,7 +91,7 @@ def test_music_generation_invalid_duration():
     login_data = {"username": "testuser", "password": "testpass123"}
     login_response = client.post("/api/auth/token", data=login_data)
     token = login_response.json()["access_token"]
-    
+
     # Try to generate with invalid duration
     generation_params = {
         "genre": "pop",
@@ -103,7 +102,7 @@ def test_music_generation_invalid_duration():
     }
     headers = {"Authorization": f"Bearer {token}"}
     response = client.post("/api/music/generate", json=generation_params, headers=headers)
-    assert response.status_code == 400
+    assert response.status_code == 422  # Pydantic validation error
 
 
 def test_export_track():
@@ -112,7 +111,7 @@ def test_export_track():
     login_data = {"username": "testuser", "password": "testpass123"}
     login_response = client.post("/api/auth/token", data=login_data)
     token = login_response.json()["access_token"]
-    
+
     # Export track
     export_params = {
         "track_id": "track_123",
@@ -134,7 +133,7 @@ def test_export_unsupported_format():
     login_data = {"username": "testuser", "password": "testpass123"}
     login_response = client.post("/api/auth/token", data=login_data)
     token = login_response.json()["access_token"]
-    
+
     # Try unsupported format
     export_params = {
         "track_id": "track_123",
@@ -152,7 +151,7 @@ def test_get_user_profile():
     login_data = {"username": "testuser", "password": "testpass123"}
     login_response = client.post("/api/auth/token", data=login_data)
     token = login_response.json()["access_token"]
-    
+
     # Get profile
     headers = {"Authorization": f"Bearer {token}"}
     response = client.get("/api/users/profile", headers=headers)

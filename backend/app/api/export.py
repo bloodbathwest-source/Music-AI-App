@@ -1,7 +1,6 @@
 """Export and sharing API endpoints."""
 from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException
-from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from backend.app.api.auth import oauth2_scheme
 
@@ -28,7 +27,7 @@ class UploadRequest(BaseModel):
 @router.post("/export")
 async def export_track(
     request: ExportRequest,
-    token: str = Depends(oauth2_scheme)
+    token: str = Depends(oauth2_scheme)  # pylint: disable=unused-argument
 ):
     """Export track in specified format."""
     supported_formats = ["mp3", "wav", "flac", "midi"]
@@ -37,7 +36,7 @@ async def export_track(
             status_code=400,
             detail=f"Unsupported format. Supported formats: {', '.join(supported_formats)}"
         )
-    
+
     return {
         "track_id": request.track_id,
         "format": request.format,
@@ -49,7 +48,7 @@ async def export_track(
 @router.get("/download/{filename}")
 async def download_track(
     filename: str,
-    token: str = Depends(oauth2_scheme)
+    token: str = Depends(oauth2_scheme)  # pylint: disable=unused-argument
 ):
     """Download exported track."""
     # In production, this would serve the actual file
@@ -59,7 +58,7 @@ async def download_track(
 @router.post("/upload")
 async def upload_to_platform(
     request: UploadRequest,
-    token: str = Depends(oauth2_scheme)
+    token: str = Depends(oauth2_scheme)  # pylint: disable=unused-argument
 ):
     """Upload track to external platform."""
     supported_platforms = ["spotify", "soundcloud", "youtube"]
@@ -68,7 +67,7 @@ async def upload_to_platform(
             status_code=400,
             detail=f"Unsupported platform. Supported: {', '.join(supported_platforms)}"
         )
-    
+
     return {
         "track_id": request.track_id,
         "platform": request.platform,
@@ -80,7 +79,7 @@ async def upload_to_platform(
 @router.get("/upload/{upload_id}/status")
 async def get_upload_status(
     upload_id: str,
-    token: str = Depends(oauth2_scheme)
+    token: str = Depends(oauth2_scheme)  # pylint: disable=unused-argument
 ):
     """Get upload status."""
     return {

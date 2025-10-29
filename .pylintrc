@@ -1,0 +1,47 @@
+[MASTER]
+# Use multiple processes to speed up Pylint
+jobs=1
+
+[MESSAGES CONTROL]
+# Disable specific checks that are design choices
+disable=
+    too-many-instance-attributes,
+    too-many-arguments,
+    too-many-positional-arguments,
+    too-few-public-methods,
+    too-many-return-statements,
+    too-many-locals,
+    too-many-branches,
+    too-many-statements,
+    duplicate-code,
+    no-else-return,
+    broad-exception-caught,
+    wrong-import-position,
+    import-outside-toplevel,
+    consider-using-from-import
+
+[FORMAT]
+# Maximum number of characters on a single line
+max-line-length=100
+
+[DESIGN]
+# Maximum number of arguments for function / method
+max-args=7
+
+# Maximum number of locals for function / method body
+max-locals=20
+
+# Maximum number of return / yield for function / method body
+max-returns=10
+
+# Maximum number of branch for function / method body
+max-branches=15
+
+# Maximum number of statements in function / method body
+max-statements=70
+
+# Maximum number of attributes for a class (see R0902)
+max-attributes=10
+
+# Minimum number of public methods for a class (see R0903)
+min-public-methods=0

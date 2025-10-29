@@ -6,7 +6,6 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from pydantic import BaseModel, EmailStr
 from backend.app.core.config import settings
 from backend.app.core.security import (
-    verify_password,
     get_password_hash,
     create_access_token,
     decode_access_token
@@ -40,7 +39,7 @@ async def register(user: UserCreate):
     """Register a new user."""
     # In production, this would interact with the database
     # For now, return a mock token
-    hashed_password = get_password_hash(user.password)
+    _ = get_password_hash(user.password)  # Mock: hash computed but not stored in DB
     access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
         data={"sub": user.username}, expires_delta=access_token_expires

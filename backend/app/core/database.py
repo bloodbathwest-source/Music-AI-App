@@ -7,7 +7,9 @@ from backend.app.core.config import settings
 
 # PostgreSQL setup
 engine = create_engine(settings.DATABASE_URL)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+SessionLocal = sessionmaker(  # pylint: disable=invalid-name
+    autocommit=False, autoflush=False, bind=engine
+)
 Base = declarative_base()
 
 # MongoDB setup
