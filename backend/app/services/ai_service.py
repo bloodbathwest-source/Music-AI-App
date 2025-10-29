@@ -10,8 +10,7 @@ import random
 from typing import Dict, List
 
 try:
-    import torch
-    import torch.nn as nn
+    from torch import nn
     TORCH_AVAILABLE = True
 except ImportError:
     TORCH_AVAILABLE = False
@@ -127,7 +126,7 @@ class MusicGenerationService:
         # Filter to piano range (21-108)
         available_notes = [n for n in available_notes if 21 <= n <= 108]
 
-        for i in range(num_notes):
+        for _ in range(num_notes):
             # Adjust velocity based on mood
             if mood == "energetic":
                 velocity = random.randint(90, 127)
