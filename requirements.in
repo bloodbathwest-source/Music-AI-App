@@ -1,0 +1,10 @@
+# High-level dependencies for Music-AI-App
+# Use pip-compile to generate requirements.txt from this file
+# Run: pip-compile requirements.in
+
+streamlit>=1.28.0
+torch>=2.0.0
+matplotlib>=3.7.0
+midiutil>=1.2.1
+pydub>=0.25.1
+tensorflow==2.20.0

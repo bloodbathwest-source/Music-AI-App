@@ -225,3 +225,6 @@ models/
 *.flac
 generated_music/
 uploads/
+
+# Temporary/frozen requirements file (not needed in version control)
+requirements_frozen.txt
