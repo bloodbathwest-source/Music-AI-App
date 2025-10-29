@@ -8,12 +8,15 @@ import sys
 
 def test_dependencies():
     """Test that all main dependencies can be imported."""
+    import importlib
+    
     print("Testing dependency imports...")
     
     tests_passed = 0
     tests_failed = 0
     
-    # Test main dependencies
+    # Test main dependencies from requirements.in
+    # Note: numpy and pandas are transitive dependencies but critical to test
     dependencies = [
         ('streamlit', 'Streamlit'),
         ('torch', 'PyTorch'),
@@ -21,13 +24,13 @@ def test_dependencies():
         ('midiutil', 'MIDIUtil'),
         ('pydub', 'PyDub'),
         ('tensorflow', 'TensorFlow'),
-        ('numpy', 'NumPy'),
-        ('pandas', 'Pandas'),
+        ('numpy', 'NumPy (transitive)'),
+        ('pandas', 'Pandas (transitive)'),
     ]
     
     for module_name, display_name in dependencies:
         try:
-            module = __import__(module_name)
+            module = importlib.import_module(module_name)
             version = getattr(module, '__version__', 'unknown')
             print(f"✓ {display_name}: {version}")
             tests_passed += 1
