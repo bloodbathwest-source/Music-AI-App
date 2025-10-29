@@ -5,29 +5,40 @@ from typing import Dict, List
 from midiutil import MIDIFile
 
 try:
-    from torch import nn
+    import torch
+    import torch.nn as nn
     TORCH_AVAILABLE = True
 except ImportError:
+    torch = None  # type: ignore
+    nn = None  # type: ignore
     TORCH_AVAILABLE = False
 
 
-class MusicLSTM(nn.Module):
-    """LSTM model for music generation."""
+if TORCH_AVAILABLE and nn is not None:
+    class MusicLSTM(nn.Module):
+        """LSTM model for music generation."""
 
-    def __init__(self, input_size=128, hidden_size=256, num_layers=2):
-        """Initialize the LSTM model."""
-        super().__init__()
-        self.hidden_size = hidden_size
-        self.num_layers = num_layers
-        self.lstm = nn.LSTM(input_size, hidden_size, num_layers, batch_first=True)
-        self.fc = nn.Linear(hidden_size, input_size)
+        def __init__(self, input_size=128, hidden_size=256, num_layers=2):
+            """Initialize the LSTM model."""
+            super().__init__()
+            self.hidden_size = hidden_size
+            self.num_layers = num_layers
+            self.lstm = nn.LSTM(input_size, hidden_size, num_layers, batch_first=True)
+            self.fc = nn.Linear(hidden_size, input_size)
 
-    def forward(self, x):
-        """Forward pass."""
-        # x shape: (batch, seq_len, input_size)
-        lstm_out, _ = self.lstm(x)
-        output = self.fc(lstm_out)
-        return output
+        def forward(self, x):
+            """Forward pass."""
+            # x shape: (batch, seq_len, input_size)
+            lstm_out, _ = self.lstm(x)
+            output = self.fc(lstm_out)
+            return output
+else:
+    # Dummy class when torch is not available
+    class MusicLSTM:  # type: ignore
+        """Dummy LSTM model placeholder when torch is not available."""
+        def __init__(self, *args, **kwargs):
+            """Initialize dummy model."""
+            pass
 
 
 class MusicGenerationService:
@@ -78,8 +89,8 @@ class MusicGenerationService:
             }
         }
 
-    def _generate_melody(self, genre: str, mood: str, key: str,
-                        tempo: int, duration: int) -> List[Dict]:
+    def _generate_melody(self, genre: str, mood: str, key: str, tempo: int,
+                         duration: int) -> List[Dict]:
         """Generate a melody based on parameters."""
         # Musical scale patterns
         scales = {
