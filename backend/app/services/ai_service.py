@@ -1,12 +1,11 @@
 """AI music generation service."""
 import io
 import random
-from typing import Dict, List, Optional
+from typing import Dict, List
 from midiutil import MIDIFile
 
 try:
-    import torch
-    import torch.nn as nn
+    from torch import nn
     TORCH_AVAILABLE = True
 except ImportError:
     TORCH_AVAILABLE = False
@@ -14,7 +13,7 @@ except ImportError:
 
 class MusicLSTM(nn.Module):
     """LSTM model for music generation."""
-    
+
     def __init__(self, input_size=128, hidden_size=256, num_layers=2):
         """Initialize the LSTM model."""
         super().__init__()
@@ -22,7 +21,7 @@ class MusicLSTM(nn.Module):
         self.num_layers = num_layers
         self.lstm = nn.LSTM(input_size, hidden_size, num_layers, batch_first=True)
         self.fc = nn.Linear(hidden_size, input_size)
-    
+
     def forward(self, x):
         """Forward pass."""
         # x shape: (batch, seq_len, input_size)
@@ -33,7 +32,7 @@ class MusicLSTM(nn.Module):
 
 class MusicGenerationService:
     """Service for AI-powered music generation."""
-    
+
     def __init__(self):
         """Initialize the music generation service."""
         self.model = None
@@ -41,17 +40,17 @@ class MusicGenerationService:
             try:
                 self.model = MusicLSTM()
                 self.model.eval()
-            except Exception as e:
-                print(f"Failed to initialize LSTM model: {e}")
+            except Exception as error:
+                print(f"Failed to initialize LSTM model: {error}")
                 self.model = None
-    
+
     def generate_music(self, request) -> Dict:
         """
         Generate music based on the request parameters.
-        
+
         Args:
             request: MusicGenerationRequest with genre, mood, key, tempo, duration
-            
+
         Returns:
             Dict containing melody, midi_data, and parameters
         """
@@ -63,10 +62,10 @@ class MusicGenerationService:
             tempo=request.tempo,
             duration=request.duration
         )
-        
+
         # Create MIDI data
         midi_data = self._create_midi(melody, request.tempo)
-        
+
         return {
             "melody": melody,
             "midi_data": midi_data,
@@ -78,8 +77,9 @@ class MusicGenerationService:
                 "duration": request.duration
             }
         }
-    
-    def _generate_melody(self, genre: str, mood: str, key: str, tempo: int, duration: int) -> List[Dict]:
+
+    def _generate_melody(self, genre: str, mood: str, key: str,
+                        tempo: int, duration: int) -> List[Dict]:
         """Generate a melody based on parameters."""
         # Musical scale patterns
         scales = {
@@ -91,13 +91,13 @@ class MusicGenerationService:
             "A": [69, 71, 73, 74, 76, 78, 80, 81],
             "B": [71, 73, 75, 76, 78, 80, 82, 83],
         }
-        
+
         scale = scales.get(key, scales["C"])
-        
+
         # Calculate number of notes based on duration and tempo
         beats_per_second = tempo / 60.0
         num_notes = int(duration * beats_per_second / 2)  # Assuming quarter notes mostly
-        
+
         melody = []
         for i in range(num_notes):
             # Generate note based on mood
@@ -113,7 +113,7 @@ class MusicGenerationService:
             else:  # calm
                 note = random.choice(scale[:6])
                 velocity = random.randint(50, 80)
-            
+
             # Vary note duration
             if genre == "jazz":
                 duration_beats = random.choice([0.25, 0.5, 0.75, 1.0])
@@ -121,25 +121,25 @@ class MusicGenerationService:
                 duration_beats = random.choice([0.5, 1.0, 1.5, 2.0])
             else:
                 duration_beats = random.choice([0.5, 1.0])
-            
+
             melody.append({
                 "note": note,
                 "duration": duration_beats,
                 "velocity": velocity,
                 "time": i * 0.5  # Simplified timing
             })
-        
+
         return melody
-    
+
     def _create_midi(self, melody: List[Dict], tempo: int) -> bytes:
         """Create MIDI data from melody."""
         midi = MIDIFile(1)  # One track
         track = 0
         channel = 0
         time = 0
-        
+
         midi.addTempo(track, time, tempo)
-        
+
         for note_data in melody:
             midi.addNote(
                 track,
@@ -149,12 +149,12 @@ class MusicGenerationService:
                 note_data["duration"],
                 note_data["velocity"]
             )
-        
+
         # Write to bytes
         output = io.BytesIO()
         midi.writeFile(output)
         return output.getvalue()
-    
+
     def train_model(self, training_data: List[Dict]):
         """
         Train the LSTM model on custom data.
