@@ -1,0 +1,21 @@
+# High-level dependencies for Music-AI-App Streamlit frontend
+# Use pip-compile to generate requirements.txt from this file:
+#   pip install pip-tools
+#   pip-compile requirements.in
+#
+# These are the core packages needed for the application:
+
+# Web framework for interactive music generation UI
+streamlit>=1.28.0
+
+# Machine Learning framework for LSTM neural network models
+torch>=2.0.0
+
+# Visualization library for music analysis plots
+matplotlib>=3.7.0
+
+# MIDI file generation library
+midiutil>=1.2.1
+
+# Audio processing and conversion (MIDI to WAV)
+pydub>=0.25.1
