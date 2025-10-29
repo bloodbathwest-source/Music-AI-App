@@ -1,0 +1,14 @@
+-r requirements-base.txt
+fastapi==0.120.1
+uvicorn[standard]==0.38.0
+pydantic==2.12.3
+pydantic-settings==2.12.3
+sqlalchemy==2.0.44
+python-jose[cryptography]==3.5.0
+passlib[bcrypt]==1.7.4
+python-multipart==0.0.20
+email-validator==2.3.0
+
+# Testing
+pytest==8.4.2
+httpx==0.28.1

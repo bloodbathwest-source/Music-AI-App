@@ -1,0 +1,2 @@
+-r requirements-base.txt
+# Frontend-only deps (Streamlit already in base). Add more if needed.
