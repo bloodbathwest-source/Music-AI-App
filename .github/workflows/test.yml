@@ -1,4 +1,4 @@
-name: Test and Install Workflow
+name: Frontend Dependencies Validation and Installation
 
 on:
   push:
