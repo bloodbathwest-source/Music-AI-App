@@ -1,0 +1,10 @@
+# Base dependencies for Music-AI-App
+# Common dependencies used across all components
+
+# Core Python utilities
+numpy>=1.23,<2.0
+
+# Audio and MIDI processing
+midiutil==1.2.1
+pydub==0.25.1
+matplotlib>=3.7.0,<4.0

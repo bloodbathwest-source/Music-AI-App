@@ -1,0 +1,28 @@
+# Backend-specific dependencies for Music-AI-App
+# Dependencies required for the FastAPI backend
+
+# Install base dependencies first
+-r requirements-base.txt
+
+# Machine learning frameworks
+torch>=2.0.0,<3.0
+tensorflow>=2.17.0,<2.21.0
+
+# Backend API framework
+fastapi>=0.104.0,<1.0
+uvicorn[standard]>=0.24.0,<1.0
+pydantic>=2.12.0,<3.0
+pydantic-settings>=2.11.0,<3.0
+
+# Database
+sqlalchemy>=2.0.0,<3.0
+
+# Auth and security
+python-jose[cryptography]>=3.3.0,<4.0
+passlib[bcrypt]>=1.7.0,<2.0
+python-multipart>=0.0.6,<1.0
+email-validator>=2.0.0,<3.0
+
+# Testing
+pytest>=7.4.0,<9.0
+httpx>=0.27.0,<1.0

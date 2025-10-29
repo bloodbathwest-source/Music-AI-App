@@ -1,0 +1,15 @@
+# Frontend-specific dependencies for Music-AI-App
+# Dependencies required for the Streamlit frontend
+
+# Install base dependencies first
+-r requirements-base.txt
+
+# Streamlit web framework
+streamlit>=1.28.0,<2.0
+
+# Machine learning frameworks (for frontend inference)
+torch>=2.0.0,<3.0
+tensorflow>=2.17.0,<2.21.0
+
+# Additional frontend utilities
+matplotlib>=3.7.0,<4.0
