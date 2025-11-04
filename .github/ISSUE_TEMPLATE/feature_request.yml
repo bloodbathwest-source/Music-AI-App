@@ -1,0 +1,95 @@
+name: Feature Request
+description: Suggest an idea or new feature for this project
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a new feature!
+        
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Statement
+      description: Is your feature request related to a problem? Please describe.
+      placeholder: A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+    validations:
+      required: true
+      
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: Describe the solution you'd like
+      placeholder: A clear and concise description of what you want to happen.
+    validations:
+      required: true
+      
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Describe alternatives you've considered
+      placeholder: A clear and concise description of any alternative solutions or features you've considered.
+      
+  - type: dropdown
+    id: component
+    attributes:
+      label: Component
+      description: Which part of the application does this feature relate to?
+      options:
+        - Backend API
+        - Frontend UI
+        - AI/ML Model
+        - Database
+        - Authentication
+        - Export/Sharing
+        - Documentation
+        - Testing
+        - DevOps/CI/CD
+        - Other
+    validations:
+      required: true
+      
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: How important is this feature to you?
+      options:
+        - Low - Nice to have
+        - Medium - Would improve UX
+        - High - Blocking or critical
+    validations:
+      required: true
+      
+  - type: textarea
+    id: implementation-details
+    attributes:
+      label: Implementation Details (Optional)
+      description: If you have thoughts on how to implement this, share them here.
+      placeholder: |
+        - Files to modify: backend/app/music.py
+        - New dependencies: package-name==1.0.0
+        - Database schema changes: Add new table...
+        
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance Criteria
+      description: Define what success looks like for this feature.
+      placeholder: |
+        - [ ] Feature is implemented and working
+        - [ ] Tests are added and passing
+        - [ ] Documentation is updated
+        - [ ] API endpoints are documented (if applicable)
+    validations:
+      required: true
+      
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Add any other context, screenshots, or examples about the feature request here.
+      placeholder: Any additional information...
