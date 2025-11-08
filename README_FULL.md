@@ -64,7 +64,7 @@ A cutting-edge Music AI Application that enables users to create, edit, and shar
 
 ```bash
 # Install Python dependencies
-pip install -r requirements.txt
+pip install -r requirements_clean.txt
 
 # Set up environment variables
 cp .env.example .env
@@ -156,7 +156,8 @@ Music-AI-App/
 │   ├── backend/          # Backend tests
 │   └── frontend/         # Frontend tests
 ├── app.py                # Legacy Streamlit app
-├── requirements.txt      # Python dependencies
+├── requirements_clean.txt # Python dependencies (clean version)
+├── requirements.txt      # Python dependencies (legacy reference)
 └── README.md
 ```
 
