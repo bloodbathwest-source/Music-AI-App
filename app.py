@@ -581,7 +581,18 @@ def display_settings():
 
     st.subheader("Data Management")
 
-    if st.button("Reset All Progress", type="secondary"):
+    # Two-step reset driven by a session-state flag: a button nested inside
+    # another button's block can never fire, because on the rerun triggered
+    # by clicking "Confirm" the outer button reads False again.
+    if "confirm_reset" not in st.session_state:
+        st.session_state.confirm_reset = False
+
+    if not st.session_state.confirm_reset:
+        if st.button("Reset All Progress", type="secondary"):
+            st.session_state.confirm_reset = True
+            st.rerun()
+    else:
+        st.warning("Are you sure? This will erase all your progress.")
         if st.button("⚠️ Confirm Reset"):
             # Reset all session state
             for key in list(st.session_state.keys()):

@@ -32,7 +32,9 @@ async def generate_music(
     token: str = Depends(oauth2_scheme)
 ):
     """Generate music using AI."""
-    # Validate track length
+    # Validate track length. Note: MusicGenerationRequest already enforces
+    # 30 <= duration <= 180 via Pydantic, so invalid values are rejected with
+    # 422 before this handler runs; this check is defense-in-depth only.
     if request.duration < 30 or request.duration > 180:
         raise HTTPException(
             status_code=400,

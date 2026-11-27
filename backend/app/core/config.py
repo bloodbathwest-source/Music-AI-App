@@ -1,7 +1,7 @@
 """Application configuration settings."""
 from typing import List
 from pydantic_settings import BaseSettings
-from pydantic import ConfigDict
+from pydantic import ConfigDict, model_validator
 
 
 class Settings(BaseSettings):
@@ -25,7 +25,20 @@ class Settings(BaseSettings):
     POSTGRES_USER: str = "postgres"
     POSTGRES_PASSWORD: str = "password"
     POSTGRES_DB: str = "musicai"
-    DATABASE_URL: str = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_SERVER}/{POSTGRES_DB}"
+    # Left empty by default and derived from the effective POSTGRES_* values
+    # below, so environment overrides (e.g. docker-compose setting
+    # POSTGRES_SERVER=postgres) are honored. Set DATABASE_URL explicitly to
+    # override the derived value.
+    DATABASE_URL: str = ""
+
+    @model_validator(mode="after")
+    def _derive_database_url(self):
+        if not self.DATABASE_URL:
+            self.DATABASE_URL = (
+                f"postgresql://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}"
+                f"@{self.POSTGRES_SERVER}/{self.POSTGRES_DB}"
+            )
+        return self
     
     MONGODB_URL: str = "mongodb://localhost:27017"
     MONGODB_DB: str = "musicai_metadata"
