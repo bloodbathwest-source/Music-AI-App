@@ -54,6 +54,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Streamlit app: in-browser playback of generated tracks (rendered from
+  the actual notes with pretty_midi's synthesizer — no soundfont needed)
+- Streamlit app: generated tracks are kept in a "My Collection" list with
+  replay, MIDI/WAV download, and remove
+- Streamlit app: WAV download alongside the existing MIDI download
+- Streamlit app: collection backup/restore (Settings → Data Management)
+  covering tracks, achievements, titles, collectibles, and progress;
+  corrupt backup files are rejected without touching the current session
+- `music_collection.py` helper module + `tests/test_collection.py`
+  (44 tests passing in total)
+
+### Changed
+- Documentation consolidated: README.md is now the single front door;
+  README_FULL.md, QUICK_START.md, IMPLEMENTATION_SUMMARY.md, and
+  REWARD_SYSTEM.md became pointers to verbatim copies in `docs/archive/`;
+  the original prototype `code version one` moved to `archive/`
+
 ### Planned Features
 - Advanced AI models integration (Magenta, Jukebox)
 - Multi-track editor

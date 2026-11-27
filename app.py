@@ -5,13 +5,21 @@ A Streamlit application for generating music with AI and gamification features.
 
 import io
 import random
-from datetime import datetime
+import uuid
+from datetime import date, datetime
 from typing import Dict, List, Tuple, Optional
 
 import matplotlib.pyplot as plt
 import streamlit as st
 from torch import nn
 from midiutil import MIDIFile
+
+from music_collection import (
+    CollectionFormatError,
+    collection_to_json,
+    melody_to_wav_bytes,
+    parse_collection,
+)
 
 # ============================================================================
 # REWARD SYSTEM CLASSES AND FUNCTIONS
@@ -256,6 +264,12 @@ def initialize_session_state():
     if 'show_notifications' not in st.session_state:
         st.session_state.show_notifications = []
 
+    if 'track_collection' not in st.session_state:
+        st.session_state.track_collection = []
+
+    if 'wav_cache' not in st.session_state:
+        st.session_state.wav_cache = {}
+
 
 # ============================================================================
 # MUSIC GENERATION FUNCTIONS
@@ -319,6 +333,168 @@ def create_midi_from_melody(melody: List[Tuple[int, float, int]],
     midi.writeFile(midi_buffer)
     midi_buffer.seek(0)
     return midi_buffer
+
+
+# ============================================================================
+# TRACK COLLECTION, AUDIO PLAYBACK, AND BACKUP/RESTORE
+# ============================================================================
+
+def get_track_wav(track: Dict) -> bytes:
+    """Render (and cache) the WAV audio for a saved track."""
+    cache_key = track["id"]
+    if cache_key not in st.session_state.wav_cache:
+        st.session_state.wav_cache[cache_key] = melody_to_wav_bytes(
+            track["melody"], track.get("tempo", 120))
+    return st.session_state.wav_cache[cache_key]
+
+
+def save_track_to_collection(melody: List[Tuple[int, float, int]], genre: str,
+                             key_root: str, mode: str, emotion: str,
+                             generations: int, tempo: int) -> Dict:
+    """Keep a generated track in the session collection and return it."""
+    track = {
+        "id": uuid.uuid4().hex,
+        "name": f"{genre.title()} — {key_root} {mode} ({emotion})",
+        "melody": [tuple(note) for note in melody],
+        "genre": genre,
+        "key_root": key_root,
+        "mode": mode,
+        "emotion": emotion,
+        "generations": generations,
+        "tempo": tempo,
+        "created_at": datetime.now().isoformat(timespec="seconds"),
+    }
+    st.session_state.track_collection.append(track)
+    return track
+
+
+def export_collection() -> bytes:
+    """Serialize the track collection and reward progress to JSON bytes."""
+    reward_system = st.session_state.reward_system
+    return collection_to_json(
+        tracks=st.session_state.track_collection,
+        user_stats=st.session_state.user_stats,
+        achievements=[
+            {"id": a.id, "unlocked": a.unlocked, "unlock_date": a.unlock_date}
+            for a in reward_system.achievements
+        ],
+        titles=[
+            {"id": t.id, "unlocked": t.unlocked} for t in reward_system.titles
+        ],
+        collectibles=[c.id for c in st.session_state.collected_items],
+        selected_title=st.session_state.selected_title,
+        rewards_enabled=st.session_state.rewards_enabled,
+    )
+
+
+def apply_collection(doc: Dict):
+    """Replace the session state with a validated collection document.
+
+    ``doc`` must come from ``music_collection.parse_collection``, which has
+    already validated every field; unknown achievement/title/collectible
+    ids (e.g. from a different app version) are ignored.
+    """
+    stats = doc["user_stats"]
+    st.session_state.user_stats = {
+        **stats,
+        'genres_list': set(stats['genres_list']),
+        'keys_list': set(stats['keys_list']),
+        'modes_list': set(stats['modes_list']),
+        'emotions_list': set(stats['emotions_list']),
+        'last_login': (date.fromisoformat(stats['last_login'])
+                       if stats['last_login'] else None),
+    }
+
+    reward_system = RewardSystem()
+    for achievement in reward_system.achievements:
+        saved = doc["achievements"].get(achievement.id)
+        if saved and saved["unlocked"]:
+            achievement.unlocked = True
+            if saved["unlock_date"]:
+                try:
+                    achievement.unlock_date = datetime.fromisoformat(
+                        saved["unlock_date"])
+                except ValueError:
+                    achievement.unlock_date = None
+    for title in reward_system.titles:
+        if doc["titles"].get(title.id):
+            title.unlocked = True
+    st.session_state.reward_system = reward_system
+    st.session_state.unlocked_achievements = [
+        a for a in reward_system.achievements if a.unlocked]
+    st.session_state.unlocked_titles = [
+        t for t in reward_system.titles if t.unlocked]
+
+    collectibles_by_id = {c.id: c for c in reward_system.collectibles}
+    st.session_state.collected_items = [
+        collectibles_by_id[cid] for cid in doc["collectibles"]
+        if cid in collectibles_by_id
+    ]
+
+    unlocked_title_names = {t.title for t in st.session_state.unlocked_titles}
+    selected = doc["selected_title"]
+    st.session_state.selected_title = (
+        selected if selected in unlocked_title_names else None)
+    st.session_state.rewards_enabled = doc["rewards_enabled"]
+
+    st.session_state.track_collection = [
+        {**track,
+         "id": uuid.uuid4().hex,
+         "melody": [tuple(note) for note in track["melody"]]}
+        for track in doc["tracks"]
+    ]
+    st.session_state.wav_cache = {}
+    st.session_state.show_notifications = []
+
+
+def display_collection():
+    """Show the saved tracks with in-browser playback and downloads."""
+    st.subheader("🎵 My Collection")
+
+    tracks = st.session_state.track_collection
+    if not tracks:
+        st.info("No tracks saved yet. Generate a track above and it will be "
+                "kept here. You can back the whole collection up from "
+                "⚙️ Settings → Data Management so it survives a closed tab.")
+        return
+
+    st.write(f"**{len(tracks)} track(s) saved.** They live in this browser "
+             "session — download a backup from ⚙️ Settings → Data Management "
+             "to keep them for good.")
+
+    for track in reversed(tracks):
+        with st.expander(f"🎧 {track['name']}"):
+            st.caption(
+                f"{track['genre']} · key of {track['key_root']} · "
+                f"{track['mode']} · {track['emotion']} · "
+                f"{track['generations']} generations · {track['tempo']} BPM · "
+                f"created {track['created_at']}")
+            wav_bytes = get_track_wav(track)
+            st.audio(wav_bytes, format="audio/wav")
+
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                st.download_button(
+                    "⬇️ MIDI",
+                    data=create_midi_from_melody(track["melody"], track["tempo"]),
+                    file_name=f"music_{track['id'][:8]}.mid",
+                    mime="audio/midi",
+                    key=f"midi_{track['id']}",
+                )
+            with col2:
+                st.download_button(
+                    "⬇️ WAV",
+                    data=wav_bytes,
+                    file_name=f"music_{track['id'][:8]}.wav",
+                    mime="audio/wav",
+                    key=f"wav_{track['id']}",
+                )
+            with col3:
+                if st.button("🗑️ Remove", key=f"del_{track['id']}"):
+                    st.session_state.track_collection = [
+                        t for t in tracks if t["id"] != track["id"]]
+                    st.session_state.wav_cache.pop(track["id"], None)
+                    st.rerun()
 
 
 def visualize_melody(melody: List[Tuple[int, float, int]]) -> plt.Figure:
@@ -581,7 +757,47 @@ def display_settings():
 
     st.subheader("Data Management")
 
-    if st.button("Reset All Progress", type="secondary"):
+    st.write("**Back up your collection.** Your tracks and reward progress "
+             "live in this browser session. Download a backup file to keep "
+             "them, and restore it here any time to pick up where you left "
+             "off. Restoring replaces the current session's tracks and "
+             "progress.")
+
+    st.download_button(
+        "⬇️ Download my collection",
+        data=export_collection(),
+        file_name="music_ai_collection.json",
+        mime="application/json",
+    )
+
+    uploaded_collection = st.file_uploader(
+        "Restore from a collection file", type=["json"],
+        key="collection_upload")
+    if uploaded_collection is not None:
+        if st.button("♻️ Restore this collection"):
+            try:
+                parsed = parse_collection(uploaded_collection.getvalue())
+            except CollectionFormatError as exc:
+                st.error(f"That file could not be restored: {exc}")
+            else:
+                apply_collection(parsed)
+                st.success("✅ Collection restored!")
+                st.rerun()
+
+    st.divider()
+
+    # Two-step reset driven by a session-state flag: a button nested inside
+    # another button's block can never fire, because on the rerun triggered
+    # by clicking "Confirm" the outer button reads False again.
+    if "confirm_reset" not in st.session_state:
+        st.session_state.confirm_reset = False
+
+    if not st.session_state.confirm_reset:
+        if st.button("Reset All Progress", type="secondary"):
+            st.session_state.confirm_reset = True
+            st.rerun()
+    else:
+        st.warning("Are you sure? This will erase all your progress.")
         if st.button("⚠️ Confirm Reset"):
             # Reset all session state
             for key in list(st.session_state.keys()):
@@ -671,19 +887,35 @@ def display_music_creation_page():
             st.pyplot(fig)
             plt.close()
 
-            # Create MIDI
+            # Keep the track in the collection so it can be replayed,
+            # downloaded, and backed up instead of vanishing on rerun.
+            track = save_track_to_collection(
+                best_individual["melody"], genre, key_root, mode, emotion,
+                generations, tempo)
+
+            # Play the actual generated notes right here in the browser
             st.subheader("🎵 Your Generated Music")
-            midi_buffer = create_midi_from_melody(best_individual["melody"], tempo)
+            wav_bytes = get_track_wav(track)
+            st.audio(wav_bytes, format="audio/wav")
 
-            # Display download button
-            st.download_button(
-                label="⬇️ Download MIDI",
-                data=midi_buffer,
-                file_name=f"music_{genre}_{key_root}_{mode}.mid",
-                mime="audio/midi"
-            )
+            # Display download buttons
+            col_midi, col_wav = st.columns(2)
+            with col_midi:
+                st.download_button(
+                    label="⬇️ Download MIDI",
+                    data=create_midi_from_melody(track["melody"], tempo),
+                    file_name=f"music_{genre}_{key_root}_{mode}.mid",
+                    mime="audio/midi"
+                )
+            with col_wav:
+                st.download_button(
+                    label="⬇️ Download WAV",
+                    data=wav_bytes,
+                    file_name=f"music_{genre}_{key_root}_{mode}.wav",
+                    mime="audio/wav"
+                )
 
-            st.success("✅ Music generated successfully!")
+            st.success("✅ Music generated and saved to your collection!")
 
             # Display quick stats
             if st.session_state.rewards_enabled:
@@ -701,6 +933,9 @@ def display_music_creation_page():
                                                 if a.unlocked])
                     st.metric("Achievements",
                              f"{achievements_unlocked}/{len(reward_system.achievements)}")
+
+    st.divider()
+    display_collection()
 
 
 if __name__ == "__main__":

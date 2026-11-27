@@ -92,14 +92,20 @@ class MusicGenerationService:
     def _generate_melody(self, genre: str, mood: str, key: str, tempo: int,
                          duration: int) -> List[Dict]:
         """Generate a melody based on parameters."""
-        # Musical scale patterns
+        # Musical scale patterns (major scales; the sharp keys are the ones
+        # the frontend's key selector offers alongside the natural keys)
         scales = {
             "C": [60, 62, 64, 65, 67, 69, 71, 72],
+            "C#": [61, 63, 65, 66, 68, 70, 72, 73],
             "D": [62, 64, 66, 67, 69, 71, 73, 74],
+            "D#": [63, 65, 67, 68, 70, 72, 74, 75],
             "E": [64, 66, 68, 69, 71, 73, 75, 76],
             "F": [65, 67, 69, 70, 72, 74, 76, 77],
+            "F#": [66, 68, 70, 71, 73, 75, 77, 78],
             "G": [67, 69, 71, 72, 74, 76, 78, 79],
+            "G#": [68, 70, 72, 73, 75, 77, 79, 80],
             "A": [69, 71, 73, 74, 76, 78, 80, 81],
+            "A#": [70, 72, 74, 75, 77, 79, 81, 82],
             "B": [71, 73, 75, 76, 78, 80, 82, 83],
         }
 
@@ -110,7 +116,8 @@ class MusicGenerationService:
         num_notes = int(duration * beats_per_second / 2)  # Assuming quarter notes mostly
 
         melody = []
-        for i in range(num_notes):
+        current_time = 0.0  # Start time of the next note, in beats
+        for _ in range(num_notes):
             # Generate note based on mood
             if mood == "happy":
                 note = random.choice(scale[3:])  # Higher notes
@@ -133,12 +140,17 @@ class MusicGenerationService:
             else:
                 duration_beats = random.choice([0.5, 1.0])
 
+            # Notes play sequentially: each note starts when the previous
+            # one ends (the same semantics as the Streamlit app's MIDI
+            # export), instead of on a fixed half-beat grid that ignored
+            # the chosen durations.
             melody.append({
                 "note": note,
                 "duration": duration_beats,
                 "velocity": velocity,
-                "time": i * 0.5  # Simplified timing
+                "time": current_time
             })
+            current_time += duration_beats
 
         return melody
 

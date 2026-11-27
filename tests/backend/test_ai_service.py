@@ -127,6 +127,44 @@ def test_midi_data_creation():
     assert len(midi_data) > 0
 
 
+def test_melody_notes_play_sequentially():
+    """Each note starts when the previous one ends (no fixed-grid overlap)."""
+    service = MusicGenerationService()
+    request = MusicGenerationRequest(
+        genre="classical",
+        mood="calm",
+        key="C",
+        tempo=120,
+        duration=30
+    )
+
+    melody = service.generate_music(request)["melody"]
+
+    assert melody[0]["time"] == 0
+    for previous, current in zip(melody, melody[1:]):
+        assert current["time"] == previous["time"] + previous["duration"]
+
+
+def test_generate_music_sharp_keys():
+    """Sharp keys offered by the frontend generate in their own scale."""
+    service = MusicGenerationService()
+
+    for key in ["C#", "D#", "F#", "G#", "A#"]:
+        request = MusicGenerationRequest(
+            genre="pop",
+            mood="happy",
+            key=key,
+            tempo=120,
+            duration=30
+        )
+        result = service.generate_music(request)
+        assert len(result["melody"]) > 0
+        # Notes come from the requested key's scale, not the C fallback:
+        # the lowest scale note is the key's root.
+        roots = {"C#": 61, "D#": 63, "F#": 66, "G#": 68, "A#": 70}
+        assert min(n["note"] for n in result["melody"]) >= roots[key]
+
+
 def test_mood_affects_generation():
     """Test that different moods produce different results."""
     service = MusicGenerationService()
