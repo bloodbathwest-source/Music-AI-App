@@ -1,8 +1,10 @@
 """User management API endpoints."""
-from typing import List, Optional
-from fastapi import APIRouter, Depends, HTTPException
+from typing import Optional
+from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, EmailStr
-from backend.app.api.auth import oauth2_scheme
+from backend.app.api.auth import get_current_username
+from backend.app.services import track_store, user_store
+from backend.app.services.user_store import DuplicateUserError
 
 router = APIRouter()
 
@@ -23,33 +25,32 @@ class UserUpdate(BaseModel):
 
 
 @router.get("/profile", response_model=UserProfile)
-async def get_user_profile(token: str = Depends(oauth2_scheme)):
+async def get_user_profile(username: str = Depends(get_current_username)):
     """Get user profile."""
-    return {
-        "id": 1,
-        "email": "user@example.com",
-        "username": "user",
-        "full_name": "Example User",
-        "is_active": True
-    }
+    return user_store.get_user(username)
 
 
 @router.put("/profile", response_model=UserProfile)
 async def update_user_profile(
     user_update: UserUpdate,
-    token: str = Depends(oauth2_scheme)
+    username: str = Depends(get_current_username)
 ):
     """Update user profile."""
-    return {
-        "id": 1,
-        "email": user_update.email or "user@example.com",
-        "username": "user",
-        "full_name": user_update.full_name or "Example User",
-        "is_active": True
-    }
+    try:
+        return user_store.update_user(
+            username,
+            full_name=user_update.full_name,
+            email=user_update.email,
+        )
+    except DuplicateUserError as error:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(error),
+        ) from error
 
 
 @router.get("/tracks")
-async def get_user_tracks(token: str = Depends(oauth2_scheme)):
+async def get_user_tracks(username: str = Depends(get_current_username)):
     """Get user's music tracks."""
-    return {"tracks": [], "total": 0}
+    tracks = track_store.list_all_tracks(username)
+    return {"tracks": tracks, "total": len(tracks)}
